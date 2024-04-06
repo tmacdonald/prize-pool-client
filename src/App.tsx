@@ -1,30 +1,26 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { getCounter, incrementCounter } from './counter';
-
-const useCounter = (): [number, () => void] => {
-  const [counter, setCounter] = useState(0);
-
-  useEffect(() => {
-    getCounter().then(count => setCounter(count));
-  }, []);
-
-  const increment = () => {
-    incrementCounter().then(count => setCounter(count));
-  }
-
-  return [counter, increment];
-}
+import Html5QrcodePlugin from './components/Html5QrCodePlugin';
+import { Html5QrcodeResult, QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
+import { Html5QrcodeError } from 'html5-qrcode/esm/core';
 
 function App() {
-  const [counter, increment] = useCounter();
+  const handleScan: QrcodeSuccessCallback = (decodedText: string, result: Html5QrcodeResult) => {
+    console.log({ decodedText, result });
+  }
+
+  const handleError: QrcodeErrorCallback = (errorMessage: string, error: Html5QrcodeError) => {
+    if (error.type !== 0) {
+      console.error(errorMessage, error);
+    }
+    
+  }
 
   return (
     <>
       <div>
-        <button onClick={() => increment()}>
-            count is {counter}
-          </button>
+        <Html5QrcodePlugin config={{ fps: 10 }} onScan={handleScan} onError={handleError} />
       </div>
     </>
   )
