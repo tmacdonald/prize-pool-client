@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import { getCounter, incrementCounter } from './counter';
 import Html5QrcodePlugin from './components/Html5QrCodePlugin';
 import { Html5QrcodeResult, QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
 import { Html5QrcodeError } from 'html5-qrcode/esm/core';
