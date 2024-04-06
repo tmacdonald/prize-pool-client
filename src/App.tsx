@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import './App.css'
 import Html5QrcodePlugin from './components/Html5QrCodePlugin';
 import { Html5QrcodeResult, QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
