@@ -1,9 +1,17 @@
 export function setupCounter(element: HTMLButtonElement) {
-  let counter = 0
-  const setCounter = (count: number) => {
-    counter = count
-    element.innerHTML = `count is ${counter}`
+  
+  const incrementCounter = () => {
+    fetch('https://prize-pool-server.fly.dev/counter', { method: 'POST' })
+      .then(response => response.json())
+      .then(response => element.innerHTML = `count is ${response.count}`);
   }
-  element.addEventListener('click', () => setCounter(counter + 1))
-  setCounter(0)
+
+  const getCounter = () => {
+    fetch('https://prize-pool-server.fly.dev/counter')
+      .then(response => response.json())
+      .then(response => element.innerHTML = `count is ${response.count}`);
+  }
+
+  element.addEventListener('click', () => incrementCounter())
+  getCounter();
 }
