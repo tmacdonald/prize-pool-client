@@ -18,10 +18,10 @@ function App() {
   return (
     <>
       <div>
-        <Html5QrcodePlugin config={{ fps: 10 }} onScan={handleScan} onError={handleError} />
+        <Html5QrcodePlugin config={{ fps: 10, qrbox: { width: 250, height: 250 } }} onScan={handleScan} onError={handleError} />
       </div>
     </>
   )
 }
 
-export default App
+export default App;
