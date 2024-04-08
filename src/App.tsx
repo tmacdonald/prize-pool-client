@@ -1,6 +1,6 @@
-import { QrcodeErrorCallback, QrcodeSuccessCallback } from "html5-qrcode";
+import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Html5QrcodePlugin from "./components/Html5QrCodePlugin";
 import { Notifications } from "./components/Notifications";
