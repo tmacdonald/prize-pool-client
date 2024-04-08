@@ -1,4 +1,4 @@
-import { Html5Qrcode, Html5QrcodeScanner, QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
+import { Html5Qrcode, QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
 import { Html5QrcodeScannerConfig } from 'html5-qrcode/esm/html5-qrcode-scanner';
 import { useEffect } from 'react';
 
