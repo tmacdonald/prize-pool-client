@@ -5,7 +5,7 @@ import "./App.css";
 import Html5QrcodePlugin from "./components/Html5QrCodePlugin";
 import { Notifications } from "./components/Notifications";
 import { PrizeControls } from "./components/PrizeControls";
-import { Ticket, submitBallot } from "./services/api";
+import { Ticket, createMatches, submitBallot } from "./services/api";
 
 const numPrizes = 5;
 
@@ -76,7 +76,7 @@ function App() {
           minPrizeId={1}
           maxPrizeId={numPrizes}
         />
-        {/* <button onClick={() => handleScan("tim")}>Set to 3</button> */}
+        <button onClick={() => createMatches()}>create matches</button>
 
         <Html5QrcodePlugin
           config={{ fps: 10, qrbox: { width: 250, height: 250 } }}
