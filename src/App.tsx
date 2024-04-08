@@ -5,7 +5,7 @@ import "./App.css";
 import Html5QrcodePlugin from "./components/Html5QrCodePlugin";
 import { Notifications } from "./components/Notifications";
 import { PrizeControls } from "./components/PrizeControls";
-import { Ticket, createMatches, submitBallot } from "./services/api";
+import { Ticket, submitBallot } from "./services/api";
 
 const numPrizes = 5;
 

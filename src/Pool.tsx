@@ -6,10 +6,7 @@ import {
   getBallots,
   getMatches,
 } from "./services/api";
-import { Async } from "react-async";
 import { useEffect, useState } from "react";
-
-const usePool = (poolId: string) => {};
 
 const useBallots = (poolId: string) => {
   const [ballots, setBallots] = useState<Ballot[]>([]);
