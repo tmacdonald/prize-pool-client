@@ -76,8 +76,6 @@ function App() {
           minPrizeId={1}
           maxPrizeId={numPrizes}
         />
-        <button onClick={() => createMatches()}>create matches</button>
-
         <Html5QrcodePlugin
           config={{ fps: 10, qrbox: { width: 250, height: 250 } }}
           onScan={handleScan}
