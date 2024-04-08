@@ -1,4 +1,4 @@
-import { Html5QrcodeResult, QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
+import { QrcodeErrorCallback, QrcodeSuccessCallback } from 'html5-qrcode';
 import { Html5QrcodeError } from 'html5-qrcode/esm/core';
 import { useState } from 'react';
 import './App.css';
@@ -8,7 +8,7 @@ import { Notifications } from './components/Notifications';
 function App() {
   const [notifications, setNotifications] = useState<string[]>([]);
 
-  const handleScan: QrcodeSuccessCallback = (decodedText: string, result: Html5QrcodeResult) => {
+  const handleScan: QrcodeSuccessCallback = (decodedText: string) => {
     setNotifications(existingNotifications => {
       const [lastNotification] = existingNotifications.slice(-1);
       if (!lastNotification || lastNotification !== decodedText) {
