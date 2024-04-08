@@ -9,8 +9,13 @@ function App() {
   const [notifications, setNotifications] = useState<string[]>([]);
 
   const handleScan: QrcodeSuccessCallback = (decodedText: string, result: Html5QrcodeResult) => {
-    setNotifications(existingNotifications => [ ...existingNotifications, decodedText ]);
-    console.log({ decodedText, result });
+    setNotifications(existingNotifications => {
+      const [lastNotification] = existingNotifications.slice(-1);
+      if (!lastNotification || lastNotification !== decodedText) {
+        return [ ...existingNotifications, decodedText ];
+      }
+      return existingNotifications;
+    });
   }
 
   const handleError: QrcodeErrorCallback = (errorMessage: string, error: Html5QrcodeError) => {
