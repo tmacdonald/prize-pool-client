@@ -65,7 +65,7 @@ const BallotTable = ({ ballots }: IBallotTableProps) => {
     <table>
       <thead>
         <tr>
-          <th>Name</th>
+          <th>Participant</th>
           <th>Cake</th>
         </tr>
       </thead>
@@ -97,7 +97,7 @@ const MatchTable = ({ matches }: IMatchTableProps) => {
       <tbody>
         {matches.map((match) => (
           <tr key={`${match.participantId}:${match.prizeId}`}>
-            <td>{match.participantId}</td>
+            <td>{match.name}</td>
             <td>{match.prizeId}</td>
           </tr>
         ))}

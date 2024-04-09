@@ -47,10 +47,12 @@ function App() {
         ) {
           await submitBallot(prizeId, newTicket);
           setTicket([newTicket, newTicket]);
-          setNotifications((existingNotifications) => [
-            ...existingNotifications,
-            JSON.stringify(newTicket),
-          ]);
+          setNotifications((existingNotifications) =>
+            [
+              ...existingNotifications,
+              JSON.stringify({ ...newTicket, prizeId }),
+            ].slice(-3)
+          );
         }
       }
     };

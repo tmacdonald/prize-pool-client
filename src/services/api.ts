@@ -15,6 +15,8 @@ export interface Match {
   poolId: string;
   prizeId: number;
   participantId: number;
+  name: string;
+  homeroom: string;
 }
 
 export function getBaseUrl() {
