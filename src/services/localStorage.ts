@@ -11,3 +11,7 @@ export function getList<T>(key: string): T[] {
   const item = getItem<T[]>(key);
   return item ?? [];
 }
+
+export function removeItem(key: string): void {
+  localStorage.removeItem(key);
+}

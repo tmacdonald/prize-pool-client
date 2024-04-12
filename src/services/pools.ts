@@ -1,10 +1,6 @@
-import { LocalStorage } from "./CrudStorage";
+import { Identifiable, LocalStorage } from "./CrudStorage";
 
-export interface Identifiable {
-  id: string;
-}
-
-export interface Pool extends Identifiable{
+export interface Pool extends Identifiable {
   name: string;
 }
 

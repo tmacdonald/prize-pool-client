@@ -1,7 +1,7 @@
-import { type Pool, poolStorage } from "../services/pools";
-import styled from "styled-components";
-import { useCrudStorage, useList } from "../services/hooks";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { useCrudStorage } from "../services/hooks";
+import { poolStorage } from "../services/pools";
 
 const List = styled.ul``;
 
@@ -9,7 +9,7 @@ const ListItem = styled.li``;
 
 const Button = styled.button``;
 
-export const Index = () => {
+export const PoolsPage = () => {
   const { items: pools, deleteItem: deletePool } = useCrudStorage(poolStorage);
 
   return (

@@ -3,7 +3,7 @@ import { poolStorage } from "../services/pools";
 import { useNavigate } from "react-router";
 import { useCrudStorage } from "../services/hooks";
 
-export const NewPool = () => {
+export const NewPoolPage = () => {
   const { createItem } = useCrudStorage(poolStorage);
   const navigate = useNavigate();
   const [name, setName] = useState("");
