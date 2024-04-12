@@ -5,7 +5,7 @@ import {
   createMatches,
   getBallots,
   getMatches,
-} from "./services/api";
+} from "../services/api";
 import { useEffect, useState } from "react";
 
 const useBallots = (poolId: string) => {
