@@ -6,6 +6,7 @@ import "./index.css";
 import { PoolPage } from "./Pools/PoolPage.tsx";
 import { PoolsPage } from "./Pools/PoolsPage.tsx";
 import { NewPoolPage } from "./Pools/NewPoolPage.tsx";
+import { CapturePage } from "./Pools/CapturePage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
   { path: "/pools", element: <PoolsPage /> },
   { path: "/pools/new", element: <NewPoolPage /> },
   { path: "/pools/:poolId", element: <PoolPage /> },
+  { path: "/pools/:poolId/capture", element: <CapturePage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

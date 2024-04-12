@@ -1,16 +1,26 @@
 import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
-import { useEffect, useState } from "react";
-import "./App.css";
+import { useEffect, useMemo, useState } from "react";
 import Html5QrcodePlugin from "../components/Html5QrCodePlugin";
-import { Notifications } from "../components/Notifications";
 import { PrizeControls } from "../components/PrizeControls";
-import { Ticket, submitBallot } from "../services/api";
+import { useParams } from "react-router";
+import { Pool, poolStorage } from "../services/pools";
+import { useCrudStorage, useItem } from "../services/hooks";
+import { Ballot, getBallotStorage } from "../services/ballots";
+import { Ticket } from "../services/api";
 
 const numPrizes = 5;
 
-function CapturePage() {
-  const [notifications, setNotifications] = useState<string[]>([]);
+const usePool = (key: string): Pool | undefined =>
+  useItem<Pool>(poolStorage, key);
+
+export function CapturePage() {
+  const { poolId } = useParams();
+  const pool = usePool(poolId!);
+
+  const ballotStorage = useMemo(() => getBallotStorage(poolId!), [poolId]);
+  const { createItem: createBallot } = useCrudStorage(ballotStorage);
+
   const [prizeId, setPrizeId] = useState<number>(1);
   const [ticket, setTicket] = useState<
     [Ticket | undefined, Ticket | undefined]
@@ -45,14 +55,16 @@ function CapturePage() {
             previousTicket.ticketId === newTicket.ticketId
           )
         ) {
-          await submitBallot(prizeId, newTicket);
+          const ballot: Ballot = {
+            id: `${prizeId}:${newTicket.participantId}:${newTicket.ticketId}`,
+            prizeId,
+            participantId: newTicket.participantId,
+            ticketId: newTicket.ticketId,
+            name: newTicket.name,
+            group: newTicket.homeroom,
+          };
+          await createBallot(ballot);
           setTicket([newTicket, newTicket]);
-          setNotifications((existingNotifications) =>
-            [
-              ...existingNotifications,
-              JSON.stringify({ ...newTicket, prizeId }),
-            ].slice(-3)
-          );
         }
       }
     };
@@ -69,6 +81,10 @@ function CapturePage() {
     }
   };
 
+  if (!pool) {
+    return;
+  }
+
   return (
     <>
       <div>
@@ -83,10 +99,7 @@ function CapturePage() {
           onScan={handleScan}
           onError={handleError}
         />
-        <Notifications notifications={notifications} />
       </div>
     </>
   );
 }
-
-export default CapturePage;

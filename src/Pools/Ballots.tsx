@@ -38,7 +38,7 @@ export const Ballots = ({ poolId }: BallotsProps) => {
     <>
       <ul>
         {ballots.map((ballot) => (
-          <li key={ballot.id}>{ballot.participantId}</li>
+          <li key={ballot.id}>{ballot.name}</li>
         ))}
       </ul>
       <button onClick={handleAddBallots}>Add some ballots</button>
