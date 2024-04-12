@@ -1,10 +1,9 @@
-import { useMemo } from "react";
 import { useParams } from "react-router";
 
-import { useCrudStorage, useItem } from "../services/hooks";
+import { useItem } from "../services/hooks";
 import { Pool, poolStorage } from "../services/pools";
-import { Prize, getPrizeStorage } from "../services/prizes";
 import { Ballots } from "./Ballots";
+import { Prizes } from "./Prizes";
 
 const usePool = (key: string): Pool | undefined =>
   useItem<Pool>(poolStorage, key);
@@ -12,26 +11,6 @@ const usePool = (key: string): Pool | undefined =>
 export const PoolPage = () => {
   const { poolId } = useParams();
   const pool = usePool(poolId!);
-  const prizeStorage = useMemo(() => getPrizeStorage(poolId!), [poolId]);
-  const {
-    items: prizes,
-    createItem: createPrizes,
-    deleteAllItems: deleteAllPrizes,
-  } = useCrudStorage(prizeStorage);
-
-  const handleAddPrizes = () => {
-    const newPrizes = new Array(5).fill(0).map((_, i) => {
-      return {
-        id: `${i + 1}`,
-      } as Prize;
-    });
-
-    createPrizes(newPrizes);
-  };
-
-  const handleRemoveAllPrizes = () => {
-    deleteAllPrizes();
-  };
 
   if (!pool) {
     return null;
@@ -40,13 +19,9 @@ export const PoolPage = () => {
   return (
     <>
       <h1>{pool.name}</h1>
-      <ul>
-        {prizes.map((prize) => (
-          <li key={prize.id}>{prize.id}</li>
-        ))}
-      </ul>
-      <button onClick={handleAddPrizes}>Add some prizes</button>
-      <button onClick={handleRemoveAllPrizes}>Remove all prizes</button>
+
+      <h2>Prizes</h2>
+      <Prizes poolId={poolId!} />
 
       <h2>Ballots</h2>
       <Ballots poolId={poolId!} />
