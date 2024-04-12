@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import { useCrudStorage, useItem } from "../services/hooks";
 import { Pool, poolStorage } from "../services/pools";
 import { Prize, getPrizeStorage } from "../services/prizes";
+import { Ballots } from "./Ballots";
 
 const usePool = (key: string): Pool | undefined =>
   useItem<Pool>(poolStorage, key);
@@ -32,19 +33,24 @@ export const PoolPage = () => {
     deleteAllPrizes();
   };
 
+  if (!pool) {
+    return null;
+  }
+
   return (
-    pool && (
-      <>
-        <h1>{pool.name}</h1>
-        <ul>
-          {prizes.map((prize) => (
-            <li key={prize.id}>{prize.id}</li>
-          ))}
-        </ul>
-        <button onClick={handleAddPrizes}>Add some prizes</button>
-        <button onClick={handleRemoveAllPrizes}>Remove all prizes</button>
-      </>
-    )
+    <>
+      <h1>{pool.name}</h1>
+      <ul>
+        {prizes.map((prize) => (
+          <li key={prize.id}>{prize.id}</li>
+        ))}
+      </ul>
+      <button onClick={handleAddPrizes}>Add some prizes</button>
+      <button onClick={handleRemoveAllPrizes}>Remove all prizes</button>
+
+      <h2>Ballots</h2>
+      <Ballots poolId={poolId!} />
+    </>
   );
 };
 
