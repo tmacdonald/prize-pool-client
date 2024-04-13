@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Ballot, getBallotStorage } from "../services/ballots";
-import { useCrudStorage } from "../services/hooks";
+import { useSimpleCrudStorage } from "../services/hooks";
 
 interface BallotsProps {
   poolId: string;
@@ -12,12 +12,11 @@ export const Ballots = ({ poolId }: BallotsProps) => {
     items: ballots,
     createItem: createBallots,
     deleteAllItems: deleteAllBallots,
-  } = useCrudStorage(ballotStorage);
+  } = useSimpleCrudStorage(ballotStorage);
 
   const handleAddBallots = () => {
     const newBallots = new Array(5).fill(0).map((_, i) => {
       const ballot: Ballot = {
-        id: `${i + 1}`,
         participantId: 1,
         ticketId: i + 1,
         prizeId: 1,
@@ -37,8 +36,8 @@ export const Ballots = ({ poolId }: BallotsProps) => {
   return (
     <>
       <ul>
-        {ballots.map((ballot) => (
-          <li key={ballot.id}>{ballot.name}</li>
+        {ballots.map((ballot, i) => (
+          <li key={i}>{ballot.name}</li>
         ))}
       </ul>
       <button onClick={handleAddBallots}>Add some ballots</button>

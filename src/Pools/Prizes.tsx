@@ -17,7 +17,7 @@ export const Prizes = ({ poolId }: PrizesProps) => {
   const handleAddPrizes = () => {
     const newPrizes = new Array(5).fill(0).map((_, i) => {
       const prize: Prize = {
-        id: `${i + 1}`,
+        id: i + 1,
       };
       return prize;
     });

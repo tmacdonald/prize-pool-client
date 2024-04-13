@@ -1,6 +1,6 @@
-import { Identifiable, LocalStorage } from "./CrudStorage";
+import { SimpleLocalStorage } from "./CrudStorage";
 
-export interface Ballot extends Identifiable {
+export interface Ballot {
   participantId: number;
   prizeId: number;
   ticketId: number;
@@ -9,7 +9,7 @@ export interface Ballot extends Identifiable {
   group: string;
 }
 
-class BallotStorage extends LocalStorage<Ballot> {}
+class BallotStorage extends SimpleLocalStorage<Ballot> {}
 
 const getBallotStorage = (poolId: string) => {
   return new BallotStorage(`${poolId}:ballots`);

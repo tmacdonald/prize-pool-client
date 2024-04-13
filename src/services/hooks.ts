@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { CrudStorage, Identifiable } from "./CrudStorage";
+import { CrudStorage, Identifiable, SimpleCrudStorage } from "./CrudStorage";
 
-export function useList<T extends Identifiable>(storage: CrudStorage<string, T>): T[] {
-  const { items } = useCrudStorage(storage);
+export function useList<T>(storage: SimpleCrudStorage<T>): T[] {
+  const { items } = useSimpleCrudStorage(storage);
   return items;
 }
 
-export function useItem<T extends Identifiable>(storage: CrudStorage<string, T>, key: string): T | undefined {
+export function useItem<K, T extends Identifiable<K>>(storage: CrudStorage<K, T>, key: K): T | undefined {
   const [item, setItem] = useState<T | undefined>(undefined);
 
   useEffect(() => {
@@ -21,14 +21,14 @@ export function useItem<T extends Identifiable>(storage: CrudStorage<string, T>,
   return item;
 }
 
-interface UseCrudStorageResult<T extends Identifiable> {
+interface UseSimpleCrudStorageResult<T> {
   items: T[];
   createItem: (newItem: T | T[]) => Promise<void>;
-  deleteItem: (key: string) => Promise<void>;
   deleteAllItems: () => Promise<void>;
+  retrieveItems: () => Promise<void>;
 }
 
-export function useCrudStorage<T extends Identifiable>(storage: CrudStorage<string, T>): UseCrudStorageResult<T> {
+export function useSimpleCrudStorage<T>(storage: SimpleCrudStorage<T>): UseSimpleCrudStorageResult<T> {
   const [items, setItems] = useState<T[]>([]);
 
   const retrieveItems = async () => {
@@ -45,15 +45,25 @@ export function useCrudStorage<T extends Identifiable>(storage: CrudStorage<stri
     await retrieveItems();
   }
 
-  const deleteItem = async(key: string) => {
-    await storage.delete(key);
-    await retrieveItems();
-  }
-
   const deleteAllItems = async() => {
     await storage.deleteAll();
     await retrieveItems();
   }
 
-  return { items, createItem, deleteItem, deleteAllItems };
+  return { items, createItem, deleteAllItems, retrieveItems };
+}
+
+interface UseCrudStorageResult<K, T extends Identifiable<K>> extends UseSimpleCrudStorageResult<T> {
+  deleteItem: (key: K) => Promise<void>;
+}
+
+export function useCrudStorage<K, T extends Identifiable<K>>(storage: CrudStorage<K, T>): UseCrudStorageResult<K, T> {
+  const { items, createItem, deleteAllItems, retrieveItems } = useSimpleCrudStorage(storage);
+
+  const deleteItem = async(key: K) => {
+    await storage.delete(key);
+    await retrieveItems();
+  }
+
+  return { items, createItem, deleteItem, deleteAllItems, retrieveItems };
 }

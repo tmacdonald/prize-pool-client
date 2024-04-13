@@ -6,7 +6,7 @@ import { Ballots } from "./Ballots";
 import { Prizes } from "./Prizes";
 
 const usePool = (key: string): Pool | undefined =>
-  useItem<Pool>(poolStorage, key);
+  useItem<string, Pool>(poolStorage, key);
 
 export const PoolPage = () => {
   const { poolId } = useParams();
