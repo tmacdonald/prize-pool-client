@@ -15,8 +15,6 @@ import { Prize } from "./prizes";
 export interface Match {
   participantId: number;
   prizeId: number;
-  name: string;
-  group: string;
 }
 
 interface PrizeWithBallot extends Prize {
@@ -82,15 +80,13 @@ export function createMatches(
     const shuffledBallots = shuffle(prize.ballots);
     for (let i = 0; i < shuffledBallots.length; i++) {
       const potentialWinningBallot = shuffledBallots[i];
-      const { participantId, name, group } = potentialWinningBallot;
+      const { participantId } = potentialWinningBallot;
       if (!winners.has(participantId)) {
         winners.add(participantId);
         won.add(prize.id);
         matches.push({
           prizeId: prize.id,
           participantId: participantId,
-          name,
-          group,
         });
         break;
       }
@@ -110,17 +106,11 @@ export function createMatches(
   zip(remainingPrizes, remainingParticipants).forEach(
     ([prizeId, participantId]) => {
       if (!!prizeId && !!participantId) {
-        console.log(prizeId, participantId, "remaining");
-        const firstParticipantBallot = ballots.find(
-          (ballot) => ballot.participantId === participantId
-        );
         winners.add(participantId);
         won.add(prizeId);
         matches.push({
           prizeId,
           participantId,
-          name: firstParticipantBallot!.name,
-          group: firstParticipantBallot!.group,
         });
       }
     }
