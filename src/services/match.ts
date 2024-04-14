@@ -41,6 +41,7 @@ interface PrizeWithBallot extends Prize {
 // }
 
 interface MatchingOptions {
+  additionalFilter: (prize: Prize, ballots: Ballot[]) => Ballot[];
   shuffle: <T>(items: T[]) => T[];
 }
 
@@ -77,19 +78,20 @@ export function createMatches(
   );
 
   popularPrizes.forEach((prize) => {
-    const shuffledBallots = shuffle(prize.ballots);
-    for (let i = 0; i < shuffledBallots.length; i++) {
-      const potentialWinningBallot = shuffledBallots[i];
-      const { participantId } = potentialWinningBallot;
-      if (!winners.has(participantId)) {
-        winners.add(participantId);
-        won.add(prize.id);
-        matches.push({
-          prizeId: prize.id,
-          participantId: participantId,
-        });
-        break;
-      }
+    const eligibleBallots = prize.ballots.filter(
+      (ballot) => !winners.has(ballot.participantId)
+    );
+
+    const [winningBallot] = shuffle(eligibleBallots);
+    if (winningBallot) {
+      const { id: prizeId } = prize;
+      const { participantId } = winningBallot;
+      winners.add(participantId);
+      won.add(prizeId);
+      matches.push({
+        prizeId,
+        participantId,
+      });
     }
   });
 
