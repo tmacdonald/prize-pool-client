@@ -41,7 +41,7 @@ class ValidatingSimpleCrudStorage<T> extends ProxySimpleCrudStorage<T> {
   }
 }
 
-export class BallotStorage extends ValidatingSimpleCrudStorage<Ballot> {
+class BallotStorage extends ValidatingSimpleCrudStorage<Ballot> {
   protected validateOnCreate(
     newItems: Ballot[],
     existingItems: Ballot[]
@@ -64,4 +64,4 @@ const getBallotStorage = (poolId: string) => {
   return new BallotStorage(internalStorage);
 };
 
-export { getBallotStorage };
+export { BallotStorage, getBallotStorage };

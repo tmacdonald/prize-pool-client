@@ -36,6 +36,27 @@ export class SimpleLocalStorage<T> implements SimpleCrudStorage<T> {
   }
 }
 
+// TODO Consider beforeCreate and afterCreate
+export class SimpleInMemoryStorage<T> implements SimpleCrudStorage<T> {
+  constructor(protected storageKey: string) {}
+
+  private internalList: T[] = [];
+
+  list() {
+    return Promise.resolve(this.internalList);
+  }
+
+  async create(...newItems: T[]) {
+    const existingItems = await this.list();
+    const updatedItems = [...existingItems, ...newItems];
+    this.internalList = updatedItems;
+  }
+
+  async deleteAll() {
+    this.internalList = [];
+  }
+}
+
 export class LocalStorage<K, T extends Identifiable<K>>
   extends SimpleLocalStorage<T>
   implements CrudStorage<K, T>
