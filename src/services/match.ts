@@ -9,7 +9,7 @@ import {
   partition,
   difference,
 } from "lodash";
-import { Ballot } from "./ballots";
+import { Ballot } from "./BallotStorage";
 import { Prize } from "./prizes";
 
 export interface Match {

@@ -6,7 +6,7 @@ import { PrizeControls } from "../components/PrizeControls";
 import { useParams } from "react-router";
 import { Pool, poolStorage } from "../services/pools";
 import { useCrudStorage, useItem } from "../services/hooks";
-import { Ballot, getBallotStorage } from "../services/ballots";
+import { Ballot, getBallotStorage } from "../services/BallotStorage";
 import { Ticket } from "../services/api";
 
 const numPrizes = 5;

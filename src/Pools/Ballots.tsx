@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Ballot, getBallotStorage } from "../services/ballots";
+import { Ballot, getBallotStorage } from "../services/BallotStorage";
 import { useSimpleCrudStorage } from "../services/hooks";
 
 interface BallotsProps {
