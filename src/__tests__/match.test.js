@@ -80,5 +80,43 @@ describe("createMatches", () => {
       expect(remainingPrizes).toEqual([]);
       expect(remainingParticipants).toEqual([]);
     });
+
+    it("should match two prizes to three participants", () => {
+      const prizes = [{ id: 1 }, { id: 2 }];
+      const ballots = [
+        createBallot(1, 3, 1),
+        createBallot(1, 4, 1),
+        createBallot(1, 5, 1),
+      ];
+
+      const { matches, remainingPrizes, remainingParticipants } = createMatches(
+        prizes,
+        ballots,
+        { shuffle: (x) => x }
+      );
+      expect(matches).toEqual([
+        { prizeId: 1, participantId: 3 },
+        { prizeId: 2, participantId: 4 },
+      ]);
+      expect(remainingPrizes).toEqual([]);
+      expect(remainingParticipants).toEqual([5]);
+    });
+
+    it("should match three prizes to two participants", () => {
+      const prizes = [{ id: 1 }, { id: 2 }, { id: 3 }];
+      const ballots = [createBallot(1, 4, 1), createBallot(1, 5, 1)];
+
+      const { matches, remainingPrizes, remainingParticipants } = createMatches(
+        prizes,
+        ballots,
+        { shuffle: (x) => x }
+      );
+      expect(matches).toEqual([
+        { prizeId: 1, participantId: 4 },
+        { prizeId: 2, participantId: 5 },
+      ]);
+      expect(remainingPrizes).toEqual([3]);
+      expect(remainingParticipants).toEqual([]);
+    });
   });
 });
