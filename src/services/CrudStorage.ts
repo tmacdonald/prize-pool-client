@@ -6,7 +6,7 @@ export interface Identifiable<K> {
 
 export interface SimpleCrudStorage<T> {
   list: () => Promise<T[]>;
-  create: (item: T | T[]) => Promise<void>;
+  create: (...newItems: T[]) => Promise<void>;
   deleteAll: () => Promise<void>;
 }
 
@@ -24,19 +24,11 @@ export class SimpleLocalStorage<T> implements SimpleCrudStorage<T> {
     return Promise.resolve(getList<T>(this.storageKey));
   }
 
-  async create(item: T | T[]) {
-    const items = await this.list();
-
-    const newItems = Array.isArray(item) ? item : [item];
-    if (!this.validateOnCreate(newItems, items)) {
-      return;
-    }
-    const updatedItems = [...items, ...newItems];
+  async create(...newItems: T[]) {
+    const existingItems = await this.list();
+    console.log(existingItems, newItems);
+    const updatedItems = [...existingItems, ...newItems];
     setItem(this.storageKey, updatedItems);
-  }
-
-  protected validateOnCreate(_newItems: T[], _existingItems: T[]): boolean {
-    return true;
   }
 
   async deleteAll() {

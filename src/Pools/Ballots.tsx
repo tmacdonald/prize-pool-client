@@ -26,7 +26,7 @@ export const Ballots = ({ poolId }: BallotsProps) => {
       return ballot;
     });
 
-    createBallots(newBallots);
+    createBallots(...newBallots);
   };
 
   const handleRemoveAllBallots = () => {

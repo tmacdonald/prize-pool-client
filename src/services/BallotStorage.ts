@@ -1,4 +1,4 @@
-import { SimpleLocalStorage } from "./CrudStorage";
+import { SimpleCrudStorage, SimpleLocalStorage } from "./CrudStorage";
 
 export interface Ballot {
   participantId: number;
@@ -12,7 +12,36 @@ export interface Ballot {
 const createSetKey = (ballot: Ballot): string =>
   `${ballot.participantId}:${ballot.ticketId}`;
 
-class BallotStorage extends SimpleLocalStorage<Ballot> {
+class ProxySimpleCrudStorage<T> implements SimpleCrudStorage<T> {
+  constructor(private internalStorage: SimpleCrudStorage<T>) {}
+
+  list(): Promise<T[]> {
+    return this.internalStorage.list();
+  }
+
+  create(...newItems: T[]): Promise<void> {
+    return this.internalStorage.create(...newItems);
+  }
+
+  deleteAll(): Promise<void> {
+    return this.internalStorage.deleteAll();
+  }
+}
+
+class ValidatingSimpleCrudStorage<T> extends ProxySimpleCrudStorage<T> {
+  async create(...newItems: T[]): Promise<void> {
+    const existingItems = await this.list();
+    if (this.validateOnCreate(existingItems, newItems)) {
+      super.create(...newItems);
+    }
+  }
+
+  protected validateOnCreate(_existingItems: T[], _newItems: T[]): boolean {
+    return true;
+  }
+}
+
+export class BallotStorage extends ValidatingSimpleCrudStorage<Ballot> {
   protected validateOnCreate(
     newItems: Ballot[],
     existingItems: Ballot[]
@@ -31,7 +60,8 @@ class BallotStorage extends SimpleLocalStorage<Ballot> {
 }
 
 const getBallotStorage = (poolId: string) => {
-  return new BallotStorage(`${poolId}:ballots`);
+  const internalStorage = new SimpleLocalStorage<Ballot>(`${poolId}:ballots`);
+  return new BallotStorage(internalStorage);
 };
 
 export { getBallotStorage };
