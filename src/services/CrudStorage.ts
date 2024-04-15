@@ -10,24 +10,33 @@ export interface SimpleCrudStorage<T> {
   deleteAll: () => Promise<void>;
 }
 
-export interface CrudStorage<K, T extends Identifiable<K>> extends SimpleCrudStorage<T> {
+export interface CrudStorage<K, T extends Identifiable<K>>
+  extends SimpleCrudStorage<T> {
   get: (key: K) => Promise<T | undefined>;
   update: (key: K, item: T) => Promise<void>;
   delete: (key: K) => Promise<void>;
 }
 
 export class SimpleLocalStorage<T> implements SimpleCrudStorage<T> {
-  constructor(protected storageKey: string) { }
-  
+  constructor(protected storageKey: string) {}
+
   list() {
     return Promise.resolve(getList<T>(this.storageKey));
   }
 
   async create(item: T | T[]) {
     const items = await this.list();
+
     const newItems = Array.isArray(item) ? item : [item];
+    if (!this.validateOnCreate(newItems, items)) {
+      return;
+    }
     const updatedItems = [...items, ...newItems];
     setItem(this.storageKey, updatedItems);
+  }
+
+  protected validateOnCreate(_newItems: T[], _existingItems: T[]): boolean {
+    return true;
   }
 
   async deleteAll() {
@@ -35,23 +44,29 @@ export class SimpleLocalStorage<T> implements SimpleCrudStorage<T> {
   }
 }
 
-export class LocalStorage<K, T extends Identifiable<K>> extends SimpleLocalStorage<T> implements CrudStorage<K, T> {
+export class LocalStorage<K, T extends Identifiable<K>>
+  extends SimpleLocalStorage<T>
+  implements CrudStorage<K, T>
+{
   async get(key: K) {
     const items = await this.list();
-    return items.find(item => item.id === key);
+    return items.find((item) => item.id === key);
   }
 
   async update(key: K, item: T) {
     const items = await this.list();
-    const itemIndex = items.findIndex(item => item.id === key);
+    const itemIndex = items.findIndex((item) => item.id === key);
     items[itemIndex] = item;
     setItem(this.storageKey, items);
   }
 
   async delete(key: K) {
     const items = await this.list();
-    const itemIndex = items.findIndex(item => item.id === key);
-    const updatedItems = [...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)];
+    const itemIndex = items.findIndex((item) => item.id === key);
+    const updatedItems = [
+      ...items.slice(0, itemIndex),
+      ...items.slice(itemIndex + 1),
+    ];
     setItem(this.storageKey, updatedItems);
   }
 }

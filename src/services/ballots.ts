@@ -9,10 +9,29 @@ export interface Ballot {
   group: string;
 }
 
-class BallotStorage extends SimpleLocalStorage<Ballot> {}
+const createSetKey = (ballot: Ballot): string =>
+  `${ballot.participantId}:${ballot.ticketId}`;
+
+class BallotStorage extends SimpleLocalStorage<Ballot> {
+  protected validateOnCreate(
+    newItems: Ballot[],
+    existingItems: Ballot[]
+  ): boolean {
+    const set = new Set<string>(existingItems.map(createSetKey));
+    for (let i = 0; i < newItems.length; i += 1) {
+      const newItem = newItems[i];
+      const key = createSetKey(newItem);
+      if (set.has(key)) {
+        return false;
+      }
+      set.add(key);
+    }
+    return true;
+  }
+}
 
 const getBallotStorage = (poolId: string) => {
   return new BallotStorage(`${poolId}:ballots`);
-}
+};
 
-export { getBallotStorage }
+export { getBallotStorage };
