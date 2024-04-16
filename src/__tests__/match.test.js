@@ -1,3 +1,4 @@
+import { orderBy } from "lodash";
 import { createMatches } from "../services/match";
 
 function createBallot(prizeId, participantId, ticketId, name, group) {
@@ -116,6 +117,31 @@ describe("createMatches", () => {
         { prizeId: 2, participantId: 5 },
       ]);
       expect(remainingPrizes).toEqual([3]);
+      expect(remainingParticipants).toEqual([]);
+    });
+
+    it("should match most popular prize first", () => {
+      const prizes = [{ id: 1 }, { id: 2 }];
+      const ballots = [
+        createBallot(1, 4, 1),
+        createBallot(2, 4, 2),
+        createBallot(2, 5, 1),
+      ];
+
+      const { matches, remainingPrizes, remainingParticipants } = createMatches(
+        prizes,
+        ballots,
+        {
+          shuffle: (x) => x,
+          orderBy: (prizes) =>
+            orderBy(prizes, (prize) => prize.ballots.length, ["desc"]),
+        }
+      );
+      expect(matches).toEqual([
+        { prizeId: 2, participantId: 4 },
+        { prizeId: 1, participantId: 5 },
+      ]);
+      expect(remainingPrizes).toEqual([]);
       expect(remainingParticipants).toEqual([]);
     });
   });

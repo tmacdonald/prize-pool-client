@@ -1,13 +1,14 @@
 import {
-  orderBy,
+  orderBy as lodashOrderBy,
   groupBy,
-  range,
   shuffle as lodashShuffle,
   differenceWith,
   uniq,
   zip,
-  partition,
   difference,
+  Many,
+  ListIterator,
+  NotVoid,
 } from "lodash";
 import { Ballot } from "./BallotStorage";
 import { Prize } from "./prizes";
@@ -41,8 +42,9 @@ interface PrizeWithBallot extends Prize {
 // }
 
 interface MatchingOptions {
+  orderBy: (items: PrizeWithBallot[]) => PrizeWithBallot[];
   additionalFilter: (prize: Prize, ballots: Ballot[]) => Ballot[];
-  shuffle: <T>(items: T[]) => T[];
+  shuffle: (items: Ballot[]) => Ballot[];
 }
 
 interface MatchingResults {
@@ -56,7 +58,10 @@ export function createMatches(
   ballots: Ballot[],
   options?: MatchingOptions
 ): MatchingResults {
+  const orderBy = options?.orderBy ?? ((items) => items);
   const shuffle = options?.shuffle ?? lodashShuffle;
+  const additionalFilter =
+    options?.additionalFilter ?? ((_prize, ballots) => ballots);
 
   const matches: Match[] = [];
   const won = new Set<number>();
@@ -69,18 +74,20 @@ export function createMatches(
     ballots: ballotsGroupedByPrize[prize.id] || [],
   }));
 
-  //const [prizesFreeFromRestrictions, otherPrizes] = partition(prizesWithBallots, prize => prize.freeFromRestrictions?.length !== 0);
+  // const [prizesFreeFromRestrictions, otherPrizes] = partition(
+  //   prizesWithBallots,
+  //   (prize) => prize.freeFromRestrictions?.length !== 0
+  // );
 
-  const popularPrizes = orderBy(
-    prizesWithBallots,
-    (prize) => prize.ballots.length,
-    ["desc"]
-  );
+  const orderedPrizes = orderBy(prizesWithBallots);
 
-  popularPrizes.forEach((prize) => {
-    const eligibleBallots = prize.ballots.filter(
+  orderedPrizes.forEach((prize) => {
+    let eligibleBallots = prize.ballots.filter(
       (ballot) => !winners.has(ballot.participantId)
     );
+    if (additionalFilter) {
+      eligibleBallots = additionalFilter(prize, eligibleBallots);
+    }
 
     const [winningBallot] = shuffle(eligibleBallots);
     if (winningBallot) {
