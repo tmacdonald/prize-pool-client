@@ -1,23 +1,24 @@
+import { useSimpleCrudStorage } from "./hooks";
 import { getList, removeItem, setItem } from "./localStorage";
 
 export interface Identifiable<K> {
   id: K;
 }
 
-export interface SimpleCrudStorage<T> {
+export interface SimpleStorage<T> {
   list: () => Promise<T[]>;
   create: (...newItems: T[]) => Promise<void>;
   deleteAll: () => Promise<void>;
 }
 
 export interface CrudStorage<K, T extends Identifiable<K>>
-  extends SimpleCrudStorage<T> {
+  extends SimpleStorage<T> {
   get: (key: K) => Promise<T | undefined>;
   update: (key: K, item: T) => Promise<void>;
   delete: (key: K) => Promise<void>;
 }
 
-export class SimpleLocalStorage<T> implements SimpleCrudStorage<T> {
+export class SimpleLocalStorage<T> implements SimpleStorage<T> {
   constructor(protected storageKey: string) {}
 
   list() {
@@ -37,7 +38,7 @@ export class SimpleLocalStorage<T> implements SimpleCrudStorage<T> {
 }
 
 // TODO Consider beforeCreate and afterCreate
-export class SimpleInMemoryStorage<T> implements SimpleCrudStorage<T> {
+export class SimpleInMemoryStorage<T> implements SimpleStorage<T> {
   constructor(protected storageKey: string) {}
 
   private internalList: T[] = [];

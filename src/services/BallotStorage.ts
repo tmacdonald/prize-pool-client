@@ -1,4 +1,4 @@
-import { SimpleCrudStorage, SimpleLocalStorage } from "./CrudStorage";
+import { SimpleStorage, SimpleLocalStorage } from "./CrudStorage";
 
 export interface Ballot {
   participantId: number;
@@ -12,8 +12,8 @@ export interface Ballot {
 const createSetKey = (ballot: Ballot): string =>
   `${ballot.participantId}:${ballot.ticketId}`;
 
-class ProxySimpleCrudStorage<T> implements SimpleCrudStorage<T> {
-  constructor(private internalStorage: SimpleCrudStorage<T>) {}
+class ProxySimpleCrudStorage<T> implements SimpleStorage<T> {
+  constructor(private internalStorage: SimpleStorage<T>) {}
 
   list(): Promise<T[]> {
     return this.internalStorage.list();
