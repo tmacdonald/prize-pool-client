@@ -43,7 +43,7 @@ interface PrizeWithBallot extends Prize {
 
 interface MatchingOptions {
   orderBy: (items: PrizeWithBallot[]) => PrizeWithBallot[];
-  additionalFilter: (prize: Prize, ballots: Ballot[]) => Ballot[];
+  isPrizeEligibleForBallot: (prize: Prize, ballot: Ballot) => boolean;
   shuffle: (items: Ballot[]) => Ballot[];
 }
 
@@ -58,10 +58,13 @@ export function createMatches(
   ballots: Ballot[],
   options?: MatchingOptions
 ): MatchingResults {
-  const orderBy = options?.orderBy ?? ((items) => items);
+  const orderBy =
+    options?.orderBy ??
+    ((prizes) =>
+      lodashOrderBy(prizes, (prize) => prize.ballots.length, ["desc"]));
   const shuffle = options?.shuffle ?? lodashShuffle;
-  const additionalFilter =
-    options?.additionalFilter ?? ((_prize, ballots) => ballots);
+  const isPrizeEligibleForBallot =
+    options?.isPrizeEligibleForBallot ?? ((_prize, _ballot) => true);
 
   const matches: Match[] = [];
   const won = new Set<number>();
@@ -74,20 +77,12 @@ export function createMatches(
     ballots: ballotsGroupedByPrize[prize.id] || [],
   }));
 
-  // const [prizesFreeFromRestrictions, otherPrizes] = partition(
-  //   prizesWithBallots,
-  //   (prize) => prize.freeFromRestrictions?.length !== 0
-  // );
-
   const orderedPrizes = orderBy(prizesWithBallots);
 
   orderedPrizes.forEach((prize) => {
-    let eligibleBallots = prize.ballots.filter(
-      (ballot) => !winners.has(ballot.participantId)
-    );
-    if (additionalFilter) {
-      eligibleBallots = additionalFilter(prize, eligibleBallots);
-    }
+    let eligibleBallots = prize.ballots
+      .filter((ballot) => !winners.has(ballot.participantId))
+      .filter((ballot) => isPrizeEligibleForBallot(prize, ballot));
 
     const [winningBallot] = shuffle(eligibleBallots);
     if (winningBallot) {
@@ -103,27 +98,45 @@ export function createMatches(
   });
 
   // Look for prizes that haven't been won and match them with participants who haven't won
-  const remainingPrizes = shuffle(
-    differenceWith(uniq(prizesWithBallots.map((prize) => prize.id)), [...won])
+  // const remainingPrizes = shuffle(
+  //   differenceWith(uniq(prizesWithBallots.map((prize) => prize.id)), [...won])
+  // );
+  const remainingPrizes = differenceWith(
+    orderedPrizes,
+    [...won],
+    (prize, prizeId) => prize.id === prizeId
   );
-  const remainingParticipants = shuffle(
-    differenceWith(uniq(ballots.map((ballot) => ballot.participantId)), [
-      ...winners,
-    ])
+  // const remainingParticipants = shuffle(
+  //   differenceWith(uniq(ballots.map((ballot) => ballot.participantId)), [
+  //     ...winners,
+  //   ])
+  // );
+  let remainingBallots = differenceWith(
+    ballots,
+    [...winners],
+    (ballot, participantId) => ballot.participantId === participantId
   );
 
-  zip(remainingPrizes, remainingParticipants).forEach(
-    ([prizeId, participantId]) => {
-      if (!!prizeId && !!participantId) {
-        winners.add(participantId);
-        won.add(prizeId);
-        matches.push({
-          prizeId,
-          participantId,
-        });
-      }
+  remainingPrizes.forEach((prize) => {
+    const eligibleBallots = remainingBallots.filter((ballot) =>
+      isPrizeEligibleForBallot(prize, ballot)
+    );
+    const [winningBallot] = shuffle(eligibleBallots);
+    if (winningBallot) {
+      const { id: prizeId } = prize;
+      const { participantId } = winningBallot;
+      winners.add(participantId);
+      won.add(prizeId);
+      matches.push({
+        prizeId,
+        participantId,
+      });
+      // Remove any ballots for that participant
+      remainingBallots = remainingBallots.filter(
+        (ballot) => ballot.participantId !== winningBallot.participantId
+      );
     }
-  );
+  });
 
   const allPrizeIds = prizes.map((prize) => prize.id);
   const allParticipantIds = ballots.map((ballot) => ballot.participantId);

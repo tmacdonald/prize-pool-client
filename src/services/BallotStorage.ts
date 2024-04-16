@@ -7,6 +7,8 @@ export interface Ballot {
   // not sure if these belong here
   name: string;
   group: string;
+
+  restrictions?: string[];
 }
 
 const createSetKey = (ballot: Ballot): string =>

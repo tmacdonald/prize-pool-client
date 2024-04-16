@@ -1,4 +1,4 @@
-import { orderBy } from "lodash";
+import { intersection, orderBy } from "lodash";
 import { createMatches } from "../services/match";
 
 function createBallot(prizeId, participantId, ticketId, name, group) {
@@ -30,6 +30,34 @@ describe("createMatches", () => {
       matches: [{ prizeId: 1, participantId: 2 }],
       remainingPrizes: [],
       remainingParticipants: [],
+    });
+  });
+
+  describe("with restrictions", () => {
+    it("should not match a prize that is not free from the restriction that a ballot has", () => {
+      const prizes = [{ id: 1 }];
+      const ballots = [
+        { ...createBallot(1, 2, 1), restrictions: ["shellfish"] },
+      ];
+
+      const { matches, remainingPrizes, remainingParticipants } = createMatches(
+        prizes,
+        ballots,
+        {
+          shuffle: (x) => x,
+          isPrizeEligibleForBallot: (prize, ballot) => {
+            return (
+              intersection(
+                prize.freeFromRestrictions ?? [],
+                ballot.restrictions ?? []
+              ).length === (ballot.restrictions?.length ?? 0)
+            );
+          },
+        }
+      );
+      expect(matches).toEqual([]);
+      expect(remainingPrizes).toEqual([1]);
+      expect(remainingParticipants).toEqual([2]);
     });
   });
 
@@ -133,8 +161,6 @@ describe("createMatches", () => {
         ballots,
         {
           shuffle: (x) => x,
-          orderBy: (prizes) =>
-            orderBy(prizes, (prize) => prize.ballots.length, ["desc"]),
         }
       );
       expect(matches).toEqual([
