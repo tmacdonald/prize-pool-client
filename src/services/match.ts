@@ -9,6 +9,8 @@ import {
   Many,
   ListIterator,
   NotVoid,
+  intersection,
+  partition,
 } from "lodash";
 import { Ballot } from "./BallotStorage";
 import { Prize } from "./prizes";
@@ -42,9 +44,9 @@ interface PrizeWithBallot extends Prize {
 // }
 
 interface MatchingOptions {
-  orderBy: (items: PrizeWithBallot[]) => PrizeWithBallot[];
-  isPrizeEligibleForBallot: (prize: Prize, ballot: Ballot) => boolean;
-  shuffle: (items: Ballot[]) => Ballot[];
+  orderBy?: (items: PrizeWithBallot[]) => PrizeWithBallot[];
+  isPrizeEligibleForBallot?: (prize: Prize, ballot: Ballot) => boolean;
+  shuffle?: (items: Ballot[]) => Ballot[];
 }
 
 interface MatchingResults {
@@ -54,6 +56,71 @@ interface MatchingResults {
 }
 
 export function createMatches(
+  prizes: Prize[],
+  ballots: Ballot[],
+  options?: MatchingOptions
+): MatchingResults {
+  const [prizesFreeFromRestrictions, otherPrizes] = partition(
+    prizes,
+    (prize) => (prize.freeFromRestrictions?.length ?? 0) !== 0
+  );
+  const [ballotsWithRestrictions, otherBallots] = partition(
+    ballots,
+    (ballot) => (ballot.restrictions?.length ?? 0) !== 0
+  );
+
+  const {
+    matches: restrictedMatches,
+    remainingPrizes: remainingPrizesFreeFromRestrictions,
+    remainingParticipants: remainingParticipantsWithRestrictions,
+  } = createMatchesWithRestrictions(
+    prizesFreeFromRestrictions,
+    ballotsWithRestrictions,
+    options
+  );
+  const {
+    matches: otherMatches,
+    remainingPrizes: otherRemainingPrizes,
+    remainingParticipants: otherRemainingParticipants,
+  } = createCustomMatches(otherPrizes, otherBallots, options);
+
+  // TODO possibly match other remaining participants to remaining prizes free from restrictions
+
+  return {
+    matches: [...restrictedMatches, ...otherMatches],
+    remainingPrizes: [
+      ...remainingPrizesFreeFromRestrictions,
+      ...otherRemainingPrizes,
+    ],
+    remainingParticipants: [
+      ...remainingParticipantsWithRestrictions,
+      ...otherRemainingParticipants,
+    ],
+  };
+}
+
+export function createMatchesWithRestrictions(
+  prizes: Prize[],
+  ballots: Ballot[],
+  options?: MatchingOptions
+): MatchingResults {
+  const modifiedOptions: MatchingOptions = {
+    ...options,
+    orderBy: (prizes) =>
+      lodashOrderBy(
+        prizes,
+        (prize) => prize.freeFromRestrictions?.length ?? 0,
+        ["asc"]
+      ),
+    isPrizeEligibleForBallot: (prize, ballot) =>
+      intersection(prize.freeFromRestrictions ?? [], ballot.restrictions ?? [])
+        .length === (ballot.restrictions?.length ?? 0),
+  };
+
+  return createCustomMatches(prizes, ballots, modifiedOptions);
+}
+
+function createCustomMatches(
   prizes: Prize[],
   ballots: Ballot[],
   options?: MatchingOptions

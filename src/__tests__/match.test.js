@@ -33,7 +33,7 @@ describe("createMatches", () => {
     });
   });
 
-  describe("with restrictions", () => {
+  describe("only with restrictions", () => {
     it("should not match a prize that is not free from the restriction that a ballot has", () => {
       const prizes = [{ id: 1 }];
       const ballots = [
@@ -61,7 +61,7 @@ describe("createMatches", () => {
     });
   });
 
-  describe("identity shuffle function", () => {
+  describe("only without restrictions", () => {
     it("should match the first ballot", () => {
       const prizes = [{ id: 1 }];
       const ballots = [createBallot(1, 2, 1), createBallot(1, 3, 1)];
