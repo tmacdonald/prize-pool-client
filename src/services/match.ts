@@ -24,25 +24,6 @@ interface PrizeWithBallot extends Prize {
   ballots: Ballot[];
 }
 
-// function matchPrizesFreeFromRestrictions(prizes: PrizeWithBallot[], won: Set<number>, winners: Set<number>): Match[] {
-//   const orderedPrizes = orderBy(prizes, prize => prize.freeFromRestrictions?.length, ['asc']);
-
-//   popularPrizes.forEach(prize => {
-//     const shuffledBallots = shuffle(prize.ballots);
-//     for (let i = 0; i < shuffledBallots.length; i++) {
-//       const potentialWinningBallot = shuffledBallots[i];
-//       const { participantId, name, group } = potentialWinningBallot;
-//       if (!winners.has(participantId)) {
-//         winners.add(participantId);
-//         won.add(prize.id);
-//         matches.push({ prizeId: prize.id, participantId: participantId, name, group });
-//         break;
-//       }
-//     }
-//   });
-
-// }
-
 interface MatchingOptions {
   orderBy?: (items: PrizeWithBallot[]) => PrizeWithBallot[];
   isPrizeEligibleForBallot?: (prize: Prize, ballot: Ballot) => boolean;
@@ -164,20 +145,13 @@ function createCustomMatches(
     }
   });
 
-  // Look for prizes that haven't been won and match them with participants who haven't won
-  // const remainingPrizes = shuffle(
-  //   differenceWith(uniq(prizesWithBallots.map((prize) => prize.id)), [...won])
-  // );
+  // Look for prizes that haven't been won and match them with ballots of participants who haven't won
   const remainingPrizes = differenceWith(
     orderedPrizes,
     [...won],
     (prize, prizeId) => prize.id === prizeId
   );
-  // const remainingParticipants = shuffle(
-  //   differenceWith(uniq(ballots.map((ballot) => ballot.participantId)), [
-  //     ...winners,
-  //   ])
-  // );
+
   let remainingBallots = differenceWith(
     ballots,
     [...winners],
@@ -206,11 +180,13 @@ function createCustomMatches(
   });
 
   const allPrizeIds = prizes.map((prize) => prize.id);
-  const allParticipantIds = ballots.map((ballot) => ballot.participantId);
+  const allParticipantIds = new Set(
+    ballots.map((ballot) => ballot.participantId)
+  );
 
   return {
     matches,
     remainingPrizes: difference(allPrizeIds, [...won]),
-    remainingParticipants: difference(allParticipantIds, [...winners]),
+    remainingParticipants: difference([...allParticipantIds], [...winners]),
   };
 }

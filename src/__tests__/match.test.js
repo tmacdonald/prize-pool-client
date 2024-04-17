@@ -21,18 +21,6 @@ describe("createMatches", () => {
     });
   });
 
-  it("should match if there is a single prize and a single ticket", () => {
-    const prizes = [{ id: 1 }];
-    const ballots = [createBallot(1, 2, 1)];
-
-    const matches = createMatches(prizes, ballots);
-    expect(matches).toEqual({
-      matches: [{ prizeId: 1, participantId: 2 }],
-      remainingPrizes: [],
-      remainingParticipants: [],
-    });
-  });
-
   describe("only with restrictions", () => {
     it("should not match a prize that is not free from the restriction that a ballot has", () => {
       const prizes = [{ id: 1 }];
@@ -62,6 +50,50 @@ describe("createMatches", () => {
   });
 
   describe("only without restrictions", () => {
+    it("should not match if there are no ballots", () => {
+      const prizes = [{ id: 1 }, { id: 2 }, { id: 3 }];
+      const ballots = [];
+
+      const { matches, remainingPrizes, remainingParticipants } = createMatches(
+        prizes,
+        ballots
+      );
+
+      expect(matches).toEqual([]);
+      expect(remainingPrizes).toEqual([1, 2, 3]);
+      expect(remainingParticipants).toEqual([]);
+    });
+
+    it("should not match if there are no prizes", () => {
+      const prizes = [];
+      const ballots = [
+        { prizeId: 1, participantId: 1, ticketId: 1 },
+        { prizeId: 2, participantId: 2, ticketId: 1 },
+        { prizeId: 3, participantId: 3, ticketId: 1 },
+      ];
+
+      const { matches, remainingPrizes, remainingParticipants } = createMatches(
+        prizes,
+        ballots
+      );
+
+      expect(matches).toEqual([]);
+      expect(remainingPrizes).toEqual([]);
+      expect(remainingParticipants).toEqual([1, 2, 3]);
+    });
+
+    it("should match if there is a single prize and a single ticket", () => {
+      const prizes = [{ id: 1 }];
+      const ballots = [createBallot(1, 2, 1)];
+
+      const matches = createMatches(prizes, ballots);
+      expect(matches).toEqual({
+        matches: [{ prizeId: 1, participantId: 2 }],
+        remainingPrizes: [],
+        remainingParticipants: [],
+      });
+    });
+
     it("should match the first ballot", () => {
       const prizes = [{ id: 1 }];
       const ballots = [createBallot(1, 2, 1), createBallot(1, 3, 1)];
