@@ -1,15 +1,10 @@
 import {
-  orderBy as lodashOrderBy,
-  groupBy,
-  shuffle as lodashShuffle,
-  differenceWith,
-  uniq,
-  zip,
   difference,
-  Many,
-  ListIterator,
-  NotVoid,
+  differenceWith,
+  groupBy,
   intersection,
+  orderBy as lodashOrderBy,
+  shuffle as lodashShuffle,
   partition,
 } from "lodash";
 import { Ballot } from "./BallotStorage";
