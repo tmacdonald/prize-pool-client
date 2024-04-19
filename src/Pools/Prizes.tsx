@@ -22,7 +22,7 @@ export const Prizes = ({ poolId }: PrizesProps) => {
       return prize;
     });
 
-    createPrizes(newPrizes);
+    createPrizes(...newPrizes);
   };
 
   const handleRemoveAllPrizes = () => {

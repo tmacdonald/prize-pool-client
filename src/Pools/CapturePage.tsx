@@ -1,25 +1,22 @@
 import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
 import { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router";
 import Html5QrcodePlugin from "../components/Html5QrCodePlugin";
 import { PrizeControls } from "../components/PrizeControls";
-import { useParams } from "react-router";
-import { Pool, poolStorage } from "../services/pools";
-import { useCrudStorage, useItem } from "../services/hooks";
 import { Ballot, getBallotStorage } from "../services/BallotStorage";
 import { Ticket } from "../services/api";
+import { useSimpleCrudStorage } from "../services/hooks";
+import { usePool } from "./hooks";
 
 const numPrizes = 5;
-
-const usePool = (key: string): Pool | undefined =>
-  useItem<Pool>(poolStorage, key);
 
 export function CapturePage() {
   const { poolId } = useParams();
   const pool = usePool(poolId!);
 
   const ballotStorage = useMemo(() => getBallotStorage(poolId!), [poolId]);
-  const { createItem: createBallot } = useCrudStorage(ballotStorage);
+  const { createItem: createBallot } = useSimpleCrudStorage(ballotStorage);
 
   const [prizeId, setPrizeId] = useState<number>(1);
   const [ticket, setTicket] = useState<
@@ -56,7 +53,6 @@ export function CapturePage() {
           )
         ) {
           const ballot: Ballot = {
-            id: `${prizeId}:${newTicket.participantId}:${newTicket.ticketId}`,
             prizeId,
             participantId: newTicket.participantId,
             ticketId: newTicket.ticketId,

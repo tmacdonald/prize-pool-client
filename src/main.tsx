@@ -7,6 +7,9 @@ import { PoolPage } from "./Pools/PoolPage.tsx";
 import { PoolsPage } from "./Pools/PoolsPage.tsx";
 import { NewPoolPage } from "./Pools/NewPoolPage.tsx";
 import { CapturePage } from "./Pools/CapturePage.tsx";
+import { BallotsPage } from "./Pools/BallotsPage.tsx";
+import { PrizesPage } from "./Pools/PrizesPage.tsx";
+import { MatchesPage } from "./Pools/MatchesPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +19,9 @@ const router = createBrowserRouter([
   { path: "/pools", element: <PoolsPage /> },
   { path: "/pools/new", element: <NewPoolPage /> },
   { path: "/pools/:poolId", element: <PoolPage /> },
+  { path: "/pools/:poolId/ballots", element: <BallotsPage /> },
+  { path: "/pools/:poolId/prizes", element: <PrizesPage /> },
+  { path: "/pools/:poolId/matches", element: <MatchesPage /> },
   { path: "/pools/:poolId/capture", element: <CapturePage /> },
 ]);
 

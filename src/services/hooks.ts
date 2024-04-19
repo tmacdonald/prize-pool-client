@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { CrudStorage, Identifiable, SimpleCrudStorage } from "./CrudStorage";
+import { CrudStorage, Identifiable, SimpleStorage } from "./CrudStorage";
 
-export function useList<T>(storage: SimpleCrudStorage<T>): T[] {
-  const { items } = useSimpleCrudStorage(storage);
+export function useList<T>(storage: SimpleStorage<T>): T[] {
+  const { items } = useSimpleCrudStorage<T>(storage);
   return items;
 }
 
@@ -31,7 +31,7 @@ interface UseSimpleCrudStorageResult<T> {
 }
 
 export function useSimpleCrudStorage<T>(
-  storage: SimpleCrudStorage<T>
+  storage: SimpleStorage<T>
 ): UseSimpleCrudStorageResult<T> {
   const [items, setItems] = useState<T[]>([]);
 
@@ -66,7 +66,7 @@ export function useCrudStorage<K, T extends Identifiable<K>>(
   storage: CrudStorage<K, T>
 ): UseCrudStorageResult<K, T> {
   const { items, createItem, deleteAllItems, retrieveItems } =
-    useSimpleCrudStorage(storage);
+    useSimpleCrudStorage<T>(storage);
 
   const deleteItem = async (key: K) => {
     await storage.delete(key);

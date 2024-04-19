@@ -1,12 +1,8 @@
 import { useParams } from "react-router";
-
-import { useItem } from "../services/hooks";
-import { Pool, poolStorage } from "../services/pools";
 import { Ballots } from "./Ballots";
 import { Prizes } from "./Prizes";
-
-const usePool = (key: string): Pool | undefined =>
-  useItem<string, Pool>(poolStorage, key);
+import { usePool } from "./hooks";
+import { Link } from "react-router-dom";
 
 export const PoolPage = () => {
   const { poolId } = useParams();
@@ -21,10 +17,13 @@ export const PoolPage = () => {
       <h1>{pool.name}</h1>
 
       <h2>Prizes</h2>
-      <Prizes poolId={poolId!} />
+      <Link to={"./prizes"}>Prizes</Link>
 
       <h2>Ballots</h2>
-      <Ballots poolId={poolId!} />
+      <Link to={"./ballots"}>Ballots</Link>
+
+      <h2>Matches</h2>
+      <Link to={"./matches"}>Matches</Link>
     </>
   );
 };
