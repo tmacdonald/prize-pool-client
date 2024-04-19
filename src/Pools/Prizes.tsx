@@ -1,25 +1,39 @@
 import { useMemo } from "react";
 import { useCrudStorage } from "../services/hooks";
 import { Prize, getPrizeStorage } from "../services/prizes";
+import { usePrizeStorage } from "./hooks";
 
 interface PrizesProps {
   poolId: string;
 }
 
+const combinations = (array: string[]): string[][] => {
+  return array.reduce<string[][]>(
+    (acc, curr) => [...acc, ...acc.map((r) => [...r, curr])],
+    [[]]
+  );
+};
+
+const numPrizes = 100;
+
 export const Prizes = ({ poolId }: PrizesProps) => {
-  const prizeStorage = useMemo(() => getPrizeStorage(poolId!), [poolId]);
-  const {
-    items: prizes,
-    createItem: createPrizes,
-    deleteAllItems: deleteAllPrizes,
-  } = useCrudStorage(prizeStorage);
+  const { prizes, createPrizes, deleteAllPrizes } = usePrizeStorage(poolId!);
 
   const handleAddPrizes = () => {
-    const newPrizes = new Array(5).fill(0).map((_, i) => {
-      const prize: Prize = {
+    const possibleRestrictions = ["gluten", "soy", "dairy", "egg"];
+    const restrictionCombinations = combinations(possibleRestrictions);
+
+    const newPrizes = new Array(numPrizes).fill(0).map((x, i) => {
+      const freeFromRestrictions =
+        Math.random() < 0.2
+          ? restrictionCombinations[
+              Math.floor(Math.random() * restrictionCombinations.length)
+            ]
+          : undefined;
+      return {
         id: i + 1,
+        freeFromRestrictions,
       };
-      return prize;
     });
 
     createPrizes(...newPrizes);
@@ -33,7 +47,10 @@ export const Prizes = ({ poolId }: PrizesProps) => {
     <>
       <ul>
         {prizes.map((prize) => (
-          <li key={prize.id}>{prize.id}</li>
+          <li key={prize.id}>
+            {prize.id}
+            {prize.freeFromRestrictions?.join(",")}
+          </li>
         ))}
       </ul>
       <button onClick={handleAddPrizes}>Add some prizes</button>

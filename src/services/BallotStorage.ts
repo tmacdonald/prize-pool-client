@@ -6,7 +6,7 @@ export interface Ballot {
   ticketId: number;
   // not sure if these belong here
   name: string;
-  group: string;
+  group?: string;
 
   restrictions?: string[];
 }

@@ -9,11 +9,7 @@ import {
 } from "lodash";
 import { Ballot } from "./BallotStorage";
 import { Prize } from "./prizes";
-
-export interface Match {
-  participantId: number;
-  prizeId: number;
-}
+import { Match } from "./MatchStorage";
 
 interface PrizeWithBallot extends Prize {
   ballots: Ballot[];
@@ -31,7 +27,7 @@ interface MatchingResults {
   remainingParticipants: number[];
 }
 
-export function createMatches(
+export function generateMatches(
   prizes: Prize[],
   ballots: Ballot[],
   options?: MatchingOptions

@@ -1,5 +1,5 @@
 import { intersection, keyBy, orderBy } from "lodash";
-import { createMatches } from "../services/match";
+import { generateMatches } from "../services/match";
 
 function createBallot(prizeId, participantId, ticketId, name, group) {
   return {
@@ -66,7 +66,7 @@ it("should work", () => {
     });
   });
 
-  const { matches, remainingPrizes, remainingParticipants } = createMatches(
+  const { matches, remainingPrizes, remainingParticipants } = generateMatches(
     prizes,
     ballots
   );
