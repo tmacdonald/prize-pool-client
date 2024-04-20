@@ -1,4 +1,3 @@
-import { useSimpleCrudStorage } from "./hooks";
 import { getList, removeItem, setItem } from "./localStorage";
 
 export interface Identifiable<K> {
