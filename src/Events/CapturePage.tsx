@@ -7,15 +7,15 @@ import { PrizeControls } from "../components/PrizeControls";
 import { Ballot, getBallotStorage } from "../services/BallotStorage";
 import { Ticket } from "../services/api";
 import { useSimpleCrudStorage } from "../services/hooks";
-import { usePool } from "./hooks";
+import { useEvent } from "./hooks";
 
 const numPrizes = 5;
 
 export function CapturePage() {
-  const { poolId } = useParams();
-  const pool = usePool(poolId!);
+  const { eventId } = useParams();
+  const event = useEvent(eventId!);
 
-  const ballotStorage = useMemo(() => getBallotStorage(poolId!), [poolId]);
+  const ballotStorage = useMemo(() => getBallotStorage(eventId!), [eventId]);
   const { createItem: createBallot } = useSimpleCrudStorage(ballotStorage);
 
   const [prizeId, setPrizeId] = useState<number>(1);
@@ -77,7 +77,7 @@ export function CapturePage() {
     }
   };
 
-  if (!pool) {
+  if (!event) {
     return;
   }
 

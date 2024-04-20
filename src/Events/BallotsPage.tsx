@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { Ballots } from "./Ballots";
 
 export const BallotsPage = () => {
-  const { poolId } = useParams();
+  const { eventId } = useParams();
 
-  return <Ballots poolId={poolId!} />;
+  return <Ballots eventId={eventId!} />;
 };

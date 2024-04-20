@@ -18,7 +18,7 @@ import { Prize } from "../services/prizes";
 import { usePrizeStorage } from "./hooks";
 
 interface PrizesProps {
-  poolId: string;
+  eventId: string;
 }
 
 const combinations = (array: string[]): string[][] => {
@@ -32,9 +32,9 @@ const possibleRestrictions = ["gluten", "soy", "dairy", "egg"];
 
 const numPrizes = 100;
 
-export const Prizes = ({ poolId }: PrizesProps) => {
+export const Prizes = ({ eventId }: PrizesProps) => {
   const { prizes, createPrizes, updatePrize, deleteAllPrizes } =
-    usePrizeStorage(poolId!);
+    usePrizeStorage(eventId!);
 
   const handleAddPrizes = () => {
     const possibleRestrictions = ["gluten", "soy", "dairy", "egg"];

@@ -4,16 +4,16 @@ import {
   useItem,
   useSimpleCrudStorage,
 } from "../services/hooks";
-import { Pool, poolStorage } from "../services/pools";
+import { Event, eventStorage } from "../services/events";
 import { getPrizeStorage } from "../services/prizes";
 import { getMatchStorage } from "../services/MatchStorage";
 import { getBallotStorage } from "../services/BallotStorage";
 
-export const usePool = (key: string): Pool | undefined =>
-  useItem<string, Pool>(poolStorage, key);
+export const useEvent = (key: string): Event | undefined =>
+  useItem<string, Event>(eventStorage, key);
 
-export const usePrizeStorage = (poolId: string) => {
-  const prizeStorage = useMemo(() => getPrizeStorage(poolId!), [poolId]);
+export const usePrizeStorage = (eventId: string) => {
+  const prizeStorage = useMemo(() => getPrizeStorage(eventId!), [eventId]);
   const {
     items: prizes,
     createItem: createPrizes,
@@ -24,8 +24,8 @@ export const usePrizeStorage = (poolId: string) => {
   return { prizes, createPrizes, updatePrize, deleteAllPrizes };
 };
 
-export const useBallotStorage = (poolId: string) => {
-  const ballotStorage = useMemo(() => getBallotStorage(poolId), [poolId]);
+export const useBallotStorage = (eventId: string) => {
+  const ballotStorage = useMemo(() => getBallotStorage(eventId), [eventId]);
   const {
     items: ballots,
     createItem: createBallots,
@@ -35,8 +35,8 @@ export const useBallotStorage = (poolId: string) => {
   return { ballots, createBallots, deleteAllBallots };
 };
 
-export const useMatchStorage = (poolId: string) => {
-  const matchStorage = useMemo(() => getMatchStorage(poolId), [poolId]);
+export const useMatchStorage = (eventId: string) => {
+  const matchStorage = useMemo(() => getMatchStorage(eventId), [eventId]);
   const {
     items: matches,
     createItem: createMatches,
