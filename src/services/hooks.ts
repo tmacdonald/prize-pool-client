@@ -59,6 +59,7 @@ export function useSimpleCrudStorage<T>(
 
 interface UseCrudStorageResult<K, T extends Identifiable<K>>
   extends UseSimpleCrudStorageResult<T> {
+  updateItem: (key: K, item: T) => Promise<void>;
   deleteItem: (key: K) => Promise<void>;
 }
 
@@ -73,5 +74,17 @@ export function useCrudStorage<K, T extends Identifiable<K>>(
     await retrieveItems();
   };
 
-  return { items, createItem, deleteItem, deleteAllItems, retrieveItems };
+  const updateItem = async (key: K, item: T) => {
+    await storage.update(key, item);
+    await retrieveItems();
+  };
+
+  return {
+    items,
+    createItem,
+    deleteItem,
+    updateItem,
+    deleteAllItems,
+    retrieveItems,
+  };
 }

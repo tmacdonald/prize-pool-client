@@ -2,6 +2,14 @@ import { useMemo } from "react";
 import { Ballot, getBallotStorage } from "../services/BallotStorage";
 import { useCrudStorage, useSimpleCrudStorage } from "../services/hooks";
 import { getPrizeStorage } from "../services/prizes";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { Chip, Fab } from "@mui/material";
 
 interface BallotsProps {
   poolId: string;
@@ -60,24 +68,32 @@ export const Ballots = ({ poolId }: BallotsProps) => {
 
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <th>Participant</th>
-            <th>Prize</th>
-            <th>Restrictions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ballots.map((ballot, i) => (
-            <tr key={i}>
-              <td>{ballot.name}</td>
-              <td>{ballot.prizeId}</td>
-              <td>{ballot.restrictions?.join(", ")}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer component={Paper}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Participant</TableCell>
+                <TableCell>Prize</TableCell>
+                <TableCell>Restrictions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {ballots.map((ballot, i) => (
+                <TableRow key={i}>
+                  <TableCell>{ballot.name}</TableCell>
+                  <TableCell>{ballot.prizeId}</TableCell>
+                  <TableCell>
+                    {ballot.restrictions?.map((restriction) => (
+                      <Chip label={restriction} />
+                    ))}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
       <button onClick={handleAddBallots}>Add some ballots</button>
       <button onClick={handleRemoveAllBallots}>Remove all ballots</button>
     </>
