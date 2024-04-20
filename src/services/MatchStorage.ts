@@ -5,8 +5,8 @@ export interface Match {
   prizeId: number;
 }
 
-const getMatchStorage = (poolId: string) => {
-  return new SimpleLocalStorage<Match>(`${poolId}:matches`);
+const getMatchStorage = (eventId: string) => {
+  return new SimpleLocalStorage<Match>(`${eventId}:matches`);
 };
 
 export { getMatchStorage };

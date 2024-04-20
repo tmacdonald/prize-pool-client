@@ -6,8 +6,8 @@ export interface Prize extends Identifiable<number> {
 
 class PrizeStorage extends LocalStorage<number, Prize> {}
 
-const getPrizeStorage = (poolId: string) => {
-  return new PrizeStorage(`${poolId}:prizes`);
-}
+const getPrizeStorage = (eventId: string) => {
+  return new PrizeStorage(`${eventId}:prizes`);
+};
 
 export { getPrizeStorage };

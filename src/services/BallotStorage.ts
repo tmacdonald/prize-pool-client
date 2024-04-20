@@ -61,8 +61,8 @@ class BallotStorage extends ValidatingSimpleCrudStorage<Ballot> {
   }
 }
 
-const getBallotStorage = (poolId: string) => {
-  const internalStorage = new SimpleLocalStorage<Ballot>(`${poolId}:ballots`);
+const getBallotStorage = (eventId: string) => {
+  const internalStorage = new SimpleLocalStorage<Ballot>(`${eventId}:ballots`);
   return new BallotStorage(internalStorage);
 };
 

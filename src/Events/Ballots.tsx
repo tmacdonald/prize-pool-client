@@ -12,16 +12,16 @@ import { useCrudStorage, useSimpleCrudStorage } from "../services/hooks";
 import { getPrizeStorage } from "../services/prizes";
 
 interface BallotsProps {
-  poolId: string;
+  eventId: string;
 }
 
 const numParticipants = 100;
 const numBallotsPerParticipant = 10;
 const possibleRestrictions = ["gluten", "soy", "dairy", "egg"];
 
-export const Ballots = ({ poolId }: BallotsProps) => {
-  const ballotStorage = useMemo(() => getBallotStorage(poolId), [poolId]);
-  const prizeStorage = useMemo(() => getPrizeStorage(poolId!), [poolId]);
+export const Ballots = ({ eventId }: BallotsProps) => {
+  const ballotStorage = useMemo(() => getBallotStorage(eventId), [eventId]);
+  const prizeStorage = useMemo(() => getPrizeStorage(eventId!), [eventId]);
 
   const {
     items: ballots,

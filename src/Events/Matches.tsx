@@ -9,13 +9,13 @@ import { generateMatches } from "../services/match";
 import { useBallotStorage, useMatchStorage, usePrizeStorage } from "./hooks";
 
 interface MatchesProps {
-  poolId: string;
+  eventId: string;
 }
 
-export const Matches = ({ poolId }: MatchesProps) => {
-  const { prizes } = usePrizeStorage(poolId!);
-  const { ballots } = useBallotStorage(poolId!);
-  const { matches, createMatches } = useMatchStorage(poolId!);
+export const Matches = ({ eventId }: MatchesProps) => {
+  const { prizes } = usePrizeStorage(eventId!);
+  const { ballots } = useBallotStorage(eventId!);
+  const { matches, createMatches } = useMatchStorage(eventId!);
 
   const handleCreateMatches = () => {
     const { matches: generatedMatches } = generateMatches(prizes, ballots);
