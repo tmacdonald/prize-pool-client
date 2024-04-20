@@ -40,7 +40,7 @@ export const Prizes = ({ poolId }: PrizesProps) => {
     const possibleRestrictions = ["gluten", "soy", "dairy", "egg"];
     const restrictionCombinations = combinations(possibleRestrictions);
 
-    const newPrizes = new Array(numPrizes).fill(0).map((x, i) => {
+    const newPrizes = new Array(numPrizes).fill(0).map((_x, i) => {
       const freeFromRestrictions =
         Math.random() < 0.2
           ? restrictionCombinations[
@@ -79,7 +79,7 @@ export const Prizes = ({ poolId }: PrizesProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {prizes.map((prize, i) => (
+            {prizes.map((prize) => (
               <TableRow key={prize.id}>
                 <TableCell>{prize.id}</TableCell>
                 <TableCell>

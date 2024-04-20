@@ -18,11 +18,7 @@ export const Matches = ({ poolId }: MatchesProps) => {
   const { matches, createMatches } = useMatchStorage(poolId!);
 
   const handleCreateMatches = () => {
-    const {
-      matches: generatedMatches,
-      remainingPrizes,
-      remainingParticipants,
-    } = generateMatches(prizes, ballots);
+    const { matches: generatedMatches } = generateMatches(prizes, ballots);
 
     createMatches(...generatedMatches);
   };

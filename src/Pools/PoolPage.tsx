@@ -1,3 +1,6 @@
+import BallotIcon from "@mui/icons-material/Ballot";
+import CakeIcon from "@mui/icons-material/Cake";
+import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import {
   Container,
   ListItemIcon,
@@ -5,15 +8,10 @@ import {
   MenuItem,
   MenuList,
   Paper,
-  Typography,
 } from "@mui/material";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { usePool } from "./hooks";
-import { ContentCopy, ContentCut, ContentPaste } from "@mui/icons-material";
-import JoinInnerIcon from "@mui/icons-material/JoinInner";
-import BallotIcon from "@mui/icons-material/Ballot";
-import CakeIcon from "@mui/icons-material/Cake";
 
 export const PoolPage = () => {
   const { poolId } = useParams();

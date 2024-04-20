@@ -32,7 +32,7 @@ export const Ballots = ({ poolId }: BallotsProps) => {
   const { items: prizes } = useCrudStorage(prizeStorage);
 
   const handleAddBallots = () => {
-    const participants = new Array(numParticipants).fill(0).map((x, i) => {
+    const participants = new Array(numParticipants).fill(0).map((_x, i) => {
       const restrictions =
         Math.random() < 0.2
           ? [
@@ -49,7 +49,7 @@ export const Ballots = ({ poolId }: BallotsProps) => {
     });
 
     const newBallots = participants.flatMap((participant) => {
-      return new Array(numBallotsPerParticipant).fill(0).map((x, i) => {
+      return new Array(numBallotsPerParticipant).fill(0).map((_x, i) => {
         const prize = prizes[Math.floor(Math.random() * prizes.length)];
         return {
           prizeId: prize.id,
