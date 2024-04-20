@@ -1,19 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
-import { PoolPage } from "./Pools/PoolPage.tsx";
-import { PoolsPage } from "./Pools/PoolsPage.tsx";
-import { NewPoolPage } from "./Pools/NewPoolPage.tsx";
-import { CapturePage } from "./Pools/CapturePage.tsx";
-import { BallotsPage } from "./Pools/BallotsPage.tsx";
-import { PrizesPage } from "./Pools/PrizesPage.tsx";
-import { MatchesPage } from "./Pools/MatchesPage.tsx";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from "./App.tsx";
+import "./index.css";
+import { BallotsPage } from "./Pools/BallotsPage.tsx";
+import { CapturePage } from "./Pools/CapturePage.tsx";
+import { MatchesPage } from "./Pools/MatchesPage.tsx";
+import { NewPoolPage } from "./Pools/NewPoolPage.tsx";
+import { PoolPage } from "./Pools/PoolPage.tsx";
+import { PoolsPage } from "./Pools/PoolsPage.tsx";
+import { PrizesPage } from "./Pools/PrizesPage.tsx";
 
 const router = createBrowserRouter([
   {

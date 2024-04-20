@@ -125,9 +125,6 @@ export const Prizes = ({ poolId }: PrizesProps) => {
           onClick={handleRemoveAllPrizes}
         />
       </SpeedDial>
-
-      {/* <button onClick={handleAddPrizes}>Add some prizes</button>
-      <button onClick={handleRemoveAllPrizes}>Remove all prizes</button> */}
     </>
   );
 };
