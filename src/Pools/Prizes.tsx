@@ -1,4 +1,9 @@
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  SpeedDial,
+  SpeedDialAction,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -63,47 +68,64 @@ export const Prizes = ({ poolId }: PrizesProps) => {
 
   return (
     <>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer component={Paper}>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell>Prize</TableCell>
-                <TableCell>Free From Restrictions</TableCell>
+      <TableContainer component={Paper}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Prize</TableCell>
+              <TableCell>Free From Restrictions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {prizes.map((prize, i) => (
+              <TableRow key={prize.id}>
+                <TableCell>{prize.id}</TableCell>
+                <TableCell>
+                  <ToggleButtonGroup
+                    value={prize.freeFromRestrictions}
+                    onChange={(
+                      _event: React.MouseEvent<HTMLElement>,
+                      newRestrictions: string[]
+                    ) => handleChangeRestrictions(prize, newRestrictions)}
+                    aria-label="text formatting"
+                  >
+                    {possibleRestrictions.map((restriction) => (
+                      <ToggleButton
+                        key={`${prize.id}:${restriction}`}
+                        value={restriction}
+                        aria-label={restriction}
+                      >
+                        {restriction}
+                      </ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {prizes.map((prize, i) => (
-                <TableRow key={prize.id}>
-                  <TableCell>{prize.id}</TableCell>
-                  <TableCell>
-                    <ToggleButtonGroup
-                      value={prize.freeFromRestrictions}
-                      onChange={(
-                        _event: React.MouseEvent<HTMLElement>,
-                        newRestrictions: string[]
-                      ) => handleChangeRestrictions(prize, newRestrictions)}
-                      aria-label="text formatting"
-                    >
-                      {possibleRestrictions.map((restriction) => (
-                        <ToggleButton
-                          key={`${prize.id}:${restriction}`}
-                          value={restriction}
-                          aria-label={restriction}
-                        >
-                          {restriction}
-                        </ToggleButton>
-                      ))}
-                    </ToggleButtonGroup>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-      <button onClick={handleAddPrizes}>Add some prizes</button>
-      <button onClick={handleRemoveAllPrizes}>Remove all prizes</button>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "fixed", bottom: 16, right: 16 }}
+        icon={<span>+</span>}
+      >
+        <SpeedDialAction
+          key={"add"}
+          icon={"add"}
+          tooltipTitle={"add"}
+          onClick={handleAddPrizes}
+        />
+        <SpeedDialAction
+          key={"remove"}
+          icon={"remove"}
+          tooltipTitle={"remove"}
+          onClick={handleRemoveAllPrizes}
+        />
+      </SpeedDial>
+
+      {/* <button onClick={handleAddPrizes}>Add some prizes</button>
+      <button onClick={handleRemoveAllPrizes}>Remove all prizes</button> */}
     </>
   );
 };
