@@ -1,9 +1,12 @@
 import {
   SpeedDial,
   SpeedDialAction,
+  SpeedDialIcon,
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import ClearIcon from "@mui/icons-material/Clear";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -62,7 +65,6 @@ export const Prizes = ({ poolId }: PrizesProps) => {
     newRestrictions: string[]
   ) => {
     const newPrize = { ...prize, freeFromRestrictions: newRestrictions };
-    console.log({ prize, newPrize, newRestrictions });
     updatePrize(newPrize.id, newPrize);
   };
 
@@ -108,17 +110,17 @@ export const Prizes = ({ poolId }: PrizesProps) => {
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{ position: "fixed", bottom: 16, right: 16 }}
-        icon={<span>+</span>}
+        icon={<SpeedDialIcon />}
       >
         <SpeedDialAction
           key={"add"}
-          icon={"add"}
+          icon={<AddIcon />}
           tooltipTitle={"add"}
           onClick={handleAddPrizes}
         />
         <SpeedDialAction
           key={"remove"}
-          icon={"remove"}
+          icon={<ClearIcon />}
           tooltipTitle={"remove"}
           onClick={handleRemoveAllPrizes}
         />

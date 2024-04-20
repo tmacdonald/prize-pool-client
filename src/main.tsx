@@ -10,6 +10,10 @@ import { CapturePage } from "./Pools/CapturePage.tsx";
 import { BallotsPage } from "./Pools/BallotsPage.tsx";
 import { PrizesPage } from "./Pools/PrizesPage.tsx";
 import { MatchesPage } from "./Pools/MatchesPage.tsx";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 const router = createBrowserRouter([
   {
