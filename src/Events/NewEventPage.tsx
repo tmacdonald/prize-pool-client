@@ -12,7 +12,7 @@ export const NewEventPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const id = name.toLocaleLowerCase().replace(/\s+/, "-");
+    const id = name.toLocaleLowerCase().replace(/\s+/g, "-");
     await createItem({ id, name });
     navigate("/events");
   };
@@ -20,13 +20,6 @@ export const NewEventPage = () => {
   return (
     <Container>
       <form onSubmit={handleSubmit}>
-        {/* <label htmlFor={"key"}>Key</label>
-      <input
-        type={"text"}
-        name={"name"}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      /> */}
         <TextField
           id="name"
           label="Name"

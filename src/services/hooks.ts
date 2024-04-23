@@ -6,21 +6,27 @@ export function useList<T>(storage: SimpleStorage<T>): T[] {
   return items;
 }
 
+export type UseItemResult<T> = {
+  item: T | undefined;
+  refetch: () => Promise<void>;
+};
+
 export function useItem<K, T extends Identifiable<K>>(
   storage: CrudStorage<K, T>,
   key: K
-): T | undefined {
+): UseItemResult<T> {
   const [item, setItem] = useState<T | undefined>(undefined);
 
+  const retrieveItem = async () => {
+    const retrievedItem = await storage.get(key);
+    setItem(retrievedItem);
+  };
+
   useEffect(() => {
-    const retrieveItem = async () => {
-      const retrievedItem = await storage.get(key);
-      setItem(retrievedItem);
-    };
     retrieveItem();
   }, [key]);
 
-  return item;
+  return { item, refetch: retrieveItem };
 }
 
 interface UseSimpleCrudStorageResult<T> {
