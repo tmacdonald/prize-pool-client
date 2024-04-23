@@ -14,6 +14,7 @@ import { NewEventPage } from "./Events/NewEventPage.tsx";
 import { EventPage } from "./Events/EventPage.tsx";
 import { EventsPage } from "./Events/EventsPage.tsx";
 import { PrizesPage } from "./Events/PrizesPage.tsx";
+import { RestrictionsPage } from "./Events/RestrictionsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
   { path: "/events", element: <EventsPage /> },
   { path: "/events/new", element: <NewEventPage /> },
   { path: "/events/:eventId", element: <EventPage /> },
+  { path: "/events/:eventId/restrictions", element: <RestrictionsPage /> },
   { path: "/events/:eventId/ballots", element: <BallotsPage /> },
   { path: "/events/:eventId/prizes", element: <PrizesPage /> },
   { path: "/events/:eventId/matches", element: <MatchesPage /> },

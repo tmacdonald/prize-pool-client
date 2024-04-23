@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import {
+  UseItemResult,
   useCrudStorage,
   useItem,
   useSimpleCrudStorage,
@@ -9,8 +10,11 @@ import { getPrizeStorage } from "../services/prizes";
 import { getMatchStorage } from "../services/MatchStorage";
 import { getBallotStorage } from "../services/BallotStorage";
 
-export const useEvent = (key: string): Event | undefined =>
+export const useEvent = (key: string): UseItemResult<Event> =>
   useItem<string, Event>(eventStorage, key);
+
+export const saveEvent = (key: string, event: Event): Promise<void> =>
+  eventStorage.update(key, event);
 
 export const usePrizeStorage = (eventId: string) => {
   const prizeStorage = useMemo(() => getPrizeStorage(eventId!), [eventId]);

@@ -15,7 +15,7 @@ import { useEvent } from "./hooks";
 
 export const EventPage = () => {
   const { eventId } = useParams();
-  const event = useEvent(eventId!);
+  const { item: event } = useEvent(eventId!);
 
   if (!event) {
     return null;
@@ -27,32 +27,29 @@ export const EventPage = () => {
         <h1>{event.name}</h1>
         <Paper>
           <MenuList>
+            <MenuItem component={Link} to={"./restrictions"}>
+              <ListItemIcon>
+                <CakeIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Restrictions</ListItemText>
+            </MenuItem>
             <MenuItem component={Link} to={"./prizes"}>
               <ListItemIcon>
                 <CakeIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Prizes</ListItemText>
-              {/* <Typography variant="body2" color="text.secondary">
-              ⌘X
-            </Typography> */}
             </MenuItem>
             <MenuItem component={Link} to={"./ballots"}>
               <ListItemIcon>
                 <BallotIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Ballots</ListItemText>
-              {/* <Typography variant="body2" color="text.secondary">
-              ⌘C
-            </Typography> */}
             </MenuItem>
             <MenuItem component={Link} to={"./matches"}>
               <ListItemIcon>
                 <JoinInnerIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Matches</ListItemText>
-              {/* <Typography variant="body2" color="text.secondary">
-              ⌘X
-            </Typography> */}
             </MenuItem>
           </MenuList>
         </Paper>

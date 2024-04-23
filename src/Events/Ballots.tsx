@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import { getBallotStorage } from "../services/BallotStorage";
 import { useCrudStorage, useSimpleCrudStorage } from "../services/hooks";
 import { getPrizeStorage } from "../services/prizes";
+import { useEvent } from "./hooks";
 
 interface BallotsProps {
   eventId: string;
@@ -17,11 +18,13 @@ interface BallotsProps {
 
 const numParticipants = 100;
 const numBallotsPerParticipant = 10;
-const possibleRestrictions = ["gluten", "soy", "dairy", "egg"];
 
 export const Ballots = ({ eventId }: BallotsProps) => {
   const ballotStorage = useMemo(() => getBallotStorage(eventId), [eventId]);
-  const prizeStorage = useMemo(() => getPrizeStorage(eventId!), [eventId]);
+  const prizeStorage = useMemo(() => getPrizeStorage(eventId), [eventId]);
+
+  const { item: event } = useEvent(eventId);
+  const possibleRestrictions = event?.availableRestrictions ?? [];
 
   const {
     items: ballots,

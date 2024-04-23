@@ -15,7 +15,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Prize } from "../services/prizes";
-import { usePrizeStorage } from "./hooks";
+import { useEvent, usePrizeStorage } from "./hooks";
 
 interface PrizesProps {
   eventId: string;
@@ -28,16 +28,15 @@ const combinations = (array: string[]): string[][] => {
   );
 };
 
-const possibleRestrictions = ["gluten", "soy", "dairy", "egg"];
-
 const numPrizes = 100;
 
 export const Prizes = ({ eventId }: PrizesProps) => {
+  const { item: event } = useEvent(eventId!);
   const { prizes, createPrizes, updatePrize, deleteAllPrizes } =
     usePrizeStorage(eventId!);
+  const possibleRestrictions = event?.availableRestrictions ?? [];
 
   const handleAddPrizes = () => {
-    const possibleRestrictions = ["gluten", "soy", "dairy", "egg"];
     const restrictionCombinations = combinations(possibleRestrictions);
 
     const newPrizes = new Array(numPrizes).fill(0).map((_x, i) => {
