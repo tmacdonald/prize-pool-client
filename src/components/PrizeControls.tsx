@@ -1,3 +1,4 @@
+import { Button, Chip } from "@mui/material";
 import styled from "styled-components";
 
 interface IProps {
@@ -8,30 +9,15 @@ interface IProps {
 }
 
 const Wrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
   display: grid;
   grid-template-columns: auto 1fr auto;
   padding: 10px;
   align-items: center;
   justify-items: center;
-`;
-
-const Button = styled.button`
-  border: none;
-  background: black;
-  color: white;
-  block-size: 40px;
-  inline-size: 40px;
-  border-radius: 20px;
-`;
-
-const Prize = styled.div`
-  background: black;
-  color: white;
-  block-size: 40px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  padding-inline: 20px;
 `;
 
 export const PrizeControls = ({
@@ -50,9 +36,13 @@ export const PrizeControls = ({
 
   return (
     <Wrapper>
-      <Button onClick={decrementPrize}>&lt;</Button>
-      <Prize>{value}</Prize>
-      <Button onClick={incrementPrize}>&gt;</Button>
+      <Button variant={"contained"} onClick={decrementPrize}>
+        &lt;
+      </Button>
+      <Chip label={value} />
+      <Button variant={"contained"} onClick={incrementPrize}>
+        &gt;
+      </Button>
     </Wrapper>
   );
 };

@@ -1,22 +1,19 @@
 import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Html5QrcodePlugin from "../components/Html5QrCodePlugin";
 import { PrizeControls } from "../components/PrizeControls";
-import { Ballot, getBallotStorage } from "../services/BallotStorage";
+import { Ballot } from "../services/BallotStorage";
 import { Ticket } from "../services/api";
-import { useSimpleCrudStorage } from "../services/hooks";
-import { useEvent } from "./hooks";
-
-const numPrizes = 5;
+import { useBallotStorage, useEvent, usePrizeStorage } from "./hooks";
 
 export function CapturePage() {
   const { eventId } = useParams();
   const event = useEvent(eventId!);
 
-  const ballotStorage = useMemo(() => getBallotStorage(eventId!), [eventId]);
-  const { createItem: createBallot } = useSimpleCrudStorage(ballotStorage);
+  const { createBallots } = useBallotStorage(eventId!);
+  const { prizes } = usePrizeStorage(eventId!);
 
   const [prizeId, setPrizeId] = useState<number>(1);
   const [ticket, setTicket] = useState<
@@ -59,7 +56,7 @@ export function CapturePage() {
             name: newTicket.name,
             group: newTicket.homeroom,
           };
-          await createBallot(ballot);
+          await createBallots(ballot);
           setTicket([newTicket, newTicket]);
         }
       }
@@ -84,16 +81,16 @@ export function CapturePage() {
   return (
     <>
       <div>
-        <PrizeControls
-          value={prizeId}
-          onChange={setPrizeId}
-          minPrizeId={1}
-          maxPrizeId={numPrizes}
-        />
         <Html5QrcodePlugin
           config={{ fps: 10, qrbox: { width: 250, height: 250 } }}
           onScan={handleScan}
           onError={handleError}
+        />
+        <PrizeControls
+          value={prizeId}
+          onChange={setPrizeId}
+          minPrizeId={1}
+          maxPrizeId={prizes.length}
         />
       </div>
     </>

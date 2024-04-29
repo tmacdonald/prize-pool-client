@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { Chip, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,6 +11,7 @@ import { getBallotStorage } from "../services/BallotStorage";
 import { useCrudStorage, useSimpleCrudStorage } from "../services/hooks";
 import { getPrizeStorage } from "../services/prizes";
 import { useEvent } from "./hooks";
+import { AddToPhotos, Clear } from "@mui/icons-material";
 
 interface BallotsProps {
   eventId: string;
@@ -97,8 +98,24 @@ export const Ballots = ({ eventId }: BallotsProps) => {
           </Table>
         </TableContainer>
       </Paper>
-      <button onClick={handleAddBallots}>Add some ballots</button>
-      <button onClick={handleRemoveAllBallots}>Remove all ballots</button>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "fixed", bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+      >
+        <SpeedDialAction
+          key={"remove"}
+          icon={<Clear />}
+          tooltipTitle={"remove"}
+          onClick={handleRemoveAllBallots}
+        />
+        <SpeedDialAction
+          key={"add-examples"}
+          icon={<AddToPhotos />}
+          tooltipTitle={"add examples"}
+          onClick={handleAddBallots}
+        />
+      </SpeedDial>
     </>
   );
 };

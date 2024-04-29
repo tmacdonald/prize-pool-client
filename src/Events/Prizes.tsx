@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
+import { AddToPhotos } from "@mui/icons-material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,6 +17,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Prize } from "../services/prizes";
 import { useEvent, usePrizeStorage } from "./hooks";
+import { useNavigate } from "react-router";
 
 interface PrizesProps {
   eventId: string;
@@ -31,12 +33,17 @@ const combinations = (array: string[]): string[][] => {
 const numPrizes = 100;
 
 export const Prizes = ({ eventId }: PrizesProps) => {
+  const navigate = useNavigate();
   const { item: event } = useEvent(eventId!);
   const { prizes, createPrizes, updatePrize, deleteAllPrizes } =
     usePrizeStorage(eventId!);
   const possibleRestrictions = event?.availableRestrictions ?? [];
 
   const handleAddPrizes = () => {
+    navigate(`./add`);
+  };
+
+  const handleAddExamples = () => {
     const restrictionCombinations = combinations(possibleRestrictions);
 
     const newPrizes = new Array(numPrizes).fill(0).map((_x, i) => {
@@ -122,6 +129,12 @@ export const Prizes = ({ eventId }: PrizesProps) => {
           icon={<ClearIcon />}
           tooltipTitle={"remove"}
           onClick={handleRemoveAllPrizes}
+        />
+        <SpeedDialAction
+          key={"add-examples"}
+          icon={<AddToPhotos />}
+          tooltipTitle={"add examples"}
+          onClick={handleAddExamples}
         />
       </SpeedDial>
     </>
