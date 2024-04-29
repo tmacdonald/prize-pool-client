@@ -38,7 +38,7 @@ export const AddPrizesPage = () => {
       <form onSubmit={handleSubmit}>
         <Slider
           defaultValue={10}
-          valueLabelDisplay="auto"
+          valueLabelDisplay="on"
           value={numPrizes}
           onChange={(_e, value) =>
             setNumPrizes(typeof value === "number" ? value : value[0])
