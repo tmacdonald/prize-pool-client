@@ -17,6 +17,7 @@ interface BallotsProps {
   eventId: string;
 }
 
+const numGroups = 10;
 const numParticipants = 100;
 const numBallotsPerParticipant = 10;
 
@@ -36,6 +37,9 @@ export const Ballots = ({ eventId }: BallotsProps) => {
   const { items: prizes } = useCrudStorage(prizeStorage);
 
   const handleAddBallots = () => {
+    const groups = new Array(numGroups)
+      .fill(0)
+      .map((_x, i) => `Group ${i + 1}`);
     const participants = new Array(numParticipants).fill(0).map((_x, i) => {
       const restrictions =
         Math.random() < 0.2
@@ -48,6 +52,7 @@ export const Ballots = ({ eventId }: BallotsProps) => {
       return {
         participantId: `${i + 1}`,
         name: `Participant ${i + 1}`,
+        group: groups[Math.floor(Math.random() * groups.length)],
         restrictions,
       };
     });
@@ -78,6 +83,7 @@ export const Ballots = ({ eventId }: BallotsProps) => {
             <TableHead>
               <TableRow>
                 <TableCell>Participant</TableCell>
+                <TableCell>Group</TableCell>
                 <TableCell>Prize</TableCell>
                 <TableCell>Restrictions</TableCell>
               </TableRow>
@@ -86,6 +92,7 @@ export const Ballots = ({ eventId }: BallotsProps) => {
               {ballots.map((ballot, i) => (
                 <TableRow key={i}>
                   <TableCell>{ballot.name}</TableCell>
+                  <TableCell>{ballot.group}</TableCell>
                   <TableCell>{ballot.prizeId}</TableCell>
                   <TableCell>
                     {ballot.restrictions?.map((restriction) => (

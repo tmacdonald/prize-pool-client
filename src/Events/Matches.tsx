@@ -7,7 +7,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { generateMatches } from "../services/match";
 import { useBallotStorage, useMatchStorage, usePrizeStorage } from "./hooks";
-import { Checkbox } from "@mui/material";
+import {
+  Checkbox,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+} from "@mui/material";
+import { Add, Clear } from "@mui/icons-material";
 
 interface MatchesProps {
   eventId: string;
@@ -16,21 +22,20 @@ interface MatchesProps {
 export const Matches = ({ eventId }: MatchesProps) => {
   const { prizes } = usePrizeStorage(eventId!);
   const { ballots } = useBallotStorage(eventId!);
-  const { matches, createMatches } = useMatchStorage(eventId!);
+  const { matches, createMatches, deleteAllMatches } = useMatchStorage(
+    eventId!
+  );
 
-  const handleCreateMatches = () => {
+  const handleCreateMatches = async () => {
     const { matches: generatedMatches } = generateMatches(prizes, ballots);
 
-    createMatches(...generatedMatches);
+    await deleteAllMatches();
+    await createMatches(...generatedMatches);
   };
 
-  if (matches.length === 0) {
-    return (
-      <div>
-        No matches <button onClick={handleCreateMatches}>Create matches</button>
-      </div>
-    );
-  }
+  const handleRemoveAllMatches = () => {
+    deleteAllMatches();
+  };
 
   return (
     <>
@@ -58,6 +63,24 @@ export const Matches = ({ eventId }: MatchesProps) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "fixed", bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+      >
+        <SpeedDialAction
+          key={"remove"}
+          icon={<Clear />}
+          tooltipTitle={"remove"}
+          onClick={handleRemoveAllMatches}
+        />
+        <SpeedDialAction
+          key={"add-examples"}
+          icon={<Add />}
+          tooltipTitle={"add examples"}
+          onClick={handleCreateMatches}
+        />
+      </SpeedDial>
     </>
   );
 };
