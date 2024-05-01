@@ -46,7 +46,7 @@ export const Ballots = ({ eventId }: BallotsProps) => {
             ]
           : undefined;
       return {
-        participantId: i + 1,
+        participantId: `${i + 1}`,
         name: `Participant ${i + 1}`,
         restrictions,
       };

@@ -1,10 +1,9 @@
 import { SimpleStorage, SimpleLocalStorage } from "./CrudStorage";
 
 export interface Ballot {
-  participantId: number;
+  participantId: string;
   prizeId: number;
   ticketId: number;
-  // not sure if these belong here
   name: string;
   group?: string;
 

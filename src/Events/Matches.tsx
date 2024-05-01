@@ -7,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { generateMatches } from "../services/match";
 import { useBallotStorage, useMatchStorage, usePrizeStorage } from "./hooks";
+import { Checkbox } from "@mui/material";
 
 interface MatchesProps {
   eventId: string;
@@ -39,13 +40,19 @@ export const Matches = ({ eventId }: MatchesProps) => {
             <TableRow>
               <TableCell>Prize</TableCell>
               <TableCell>Participant</TableCell>
+              <TableCell>Group</TableCell>
+              <TableCell>Based on Preference</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {matches.map((match) => (
               <TableRow key={`${match.prizeId}:${match.participantId}`}>
                 <TableCell>{match.prizeId}</TableCell>
-                <TableCell>{match.participantId}</TableCell>
+                <TableCell>{match.name}</TableCell>
+                <TableCell>{match.group}</TableCell>
+                <TableCell>
+                  <Checkbox checked={match.basedOnPreference} readOnly={true} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

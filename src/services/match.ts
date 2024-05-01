@@ -24,7 +24,7 @@ interface MatchingOptions {
 interface MatchingResults {
   matches: Match[];
   remainingPrizes: number[];
-  remainingParticipants: number[];
+  remainingParticipants: string[];
 }
 
 export function generateMatches(
@@ -107,7 +107,7 @@ function createCustomMatches(
 
   const matches: Match[] = [];
   const won = new Set<number>();
-  const winners = new Set<number>();
+  const winners = new Set<string>();
 
   const ballotsGroupedByPrize = groupBy(ballots, (ballot) => ballot.prizeId);
 
@@ -126,12 +126,15 @@ function createCustomMatches(
     const [winningBallot] = shuffle(eligibleBallots);
     if (winningBallot) {
       const { id: prizeId } = prize;
-      const { participantId } = winningBallot;
+      const { participantId, name, group } = winningBallot;
       winners.add(participantId);
       won.add(prizeId);
       matches.push({
         prizeId,
         participantId,
+        name,
+        group,
+        basedOnPreference: true,
       });
     }
   });
@@ -156,12 +159,15 @@ function createCustomMatches(
     const [winningBallot] = shuffle(eligibleBallots);
     if (winningBallot) {
       const { id: prizeId } = prize;
-      const { participantId } = winningBallot;
+      const { participantId, name, group } = winningBallot;
       winners.add(participantId);
       won.add(prizeId);
       matches.push({
         prizeId,
         participantId,
+        name,
+        group,
+        basedOnPreference: false,
       });
       // Remove any ballots for that participant
       remainingBallots = remainingBallots.filter(

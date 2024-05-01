@@ -1,8 +1,11 @@
 import { SimpleLocalStorage } from "./CrudStorage";
 
 export interface Match {
-  participantId: number;
+  participantId: string;
   prizeId: number;
+  name: string;
+  group?: string;
+  basedOnPreference: boolean;
 }
 
 const getMatchStorage = (eventId: string) => {
