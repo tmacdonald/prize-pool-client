@@ -5,7 +5,6 @@ import "@fontsource/roboto/700.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App.tsx";
 import "./index.css";
 import { BallotsPage } from "./Events/BallotsPage.tsx";
 import { CapturePage } from "./Events/CapturePage.tsx";
