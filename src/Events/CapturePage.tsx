@@ -21,9 +21,9 @@ export function CapturePage() {
   >([undefined, undefined]);
 
   const handleScan = (decodedText: string) => {
-    console.log(decodedText);
+    const modifiedText = decodedText.replace(/([A-Za-z]+):/g, '"$1":');
     setTicket(([ticketBefore]) => [
-      JSON.parse(decodedText) as Ticket,
+      JSON.parse(modifiedText) as Ticket,
       ticketBefore,
     ]);
   };
