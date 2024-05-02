@@ -39,7 +39,7 @@ export const PrizeControls = ({
       <Button variant={"contained"} onClick={decrementPrize}>
         &lt;
       </Button>
-      <Chip label={value} />
+      <Chip label={`Prize ${value}`} />
       <Button variant={"contained"} onClick={incrementPrize}>
         &gt;
       </Button>

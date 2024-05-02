@@ -20,7 +20,7 @@ import { AddPrizesPage } from "./Events/AddPrizesPage.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <EventsPage />,
   },
   { path: "/events", element: <EventsPage /> },
   { path: "/events/new", element: <NewEventPage /> },

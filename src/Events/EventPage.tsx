@@ -1,6 +1,7 @@
 import BallotIcon from "@mui/icons-material/Ballot";
 import CakeIcon from "@mui/icons-material/Cake";
 import JoinInnerIcon from "@mui/icons-material/JoinInner";
+import CameraIcon from "@mui/icons-material/Camera";
 import {
   Container,
   ListItemIcon,
@@ -38,6 +39,12 @@ export const EventPage = () => {
                 <CakeIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Prizes</ListItemText>
+            </MenuItem>
+            <MenuItem component={Link} to={"./capture"}>
+              <ListItemIcon>
+                <CameraIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Capture Ballots</ListItemText>
             </MenuItem>
             <MenuItem component={Link} to={"./ballots"}>
               <ListItemIcon>
