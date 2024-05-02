@@ -7,6 +7,7 @@ import { PrizeControls } from "../components/PrizeControls";
 import { Ballot } from "../services/BallotStorage";
 import { useBallotStorage, useEvent, usePrizeStorage } from "./hooks";
 import { Ticket } from "../services/api";
+import { Snackbar } from "@mui/material";
 
 export function CapturePage() {
   const { eventId } = useParams();
@@ -20,6 +21,9 @@ export function CapturePage() {
     [Ticket | undefined, Ticket | undefined]
   >([undefined, undefined]);
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
     //const modifiedText = decodedText.replace(/([A-Za-z]+):/g, '"$1":');
@@ -30,6 +34,8 @@ export function CapturePage() {
       ]);
     } catch (error) {
       console.error(error);
+      setSnackbarMessage(`${error}`);
+      setSnackbarOpen(true);
     }
   };
 
@@ -65,6 +71,9 @@ export function CapturePage() {
           };
           await createBallots(ballot);
           setTicket([newTicket, newTicket]);
+
+          setSnackbarMessage("Created ballot");
+          setSnackbarOpen(true);
         }
       }
     };
@@ -98,6 +107,13 @@ export function CapturePage() {
           onChange={setPrizeId}
           minPrizeId={1}
           maxPrizeId={prizes.length}
+        />
+        <textarea value={snackbarMessage} />
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={() => setSnackbarOpen(false)}
+          message={snackbarMessage}
         />
       </div>
     </>
