@@ -21,11 +21,16 @@ export function CapturePage() {
   >([undefined, undefined]);
 
   const handleScan = (decodedText: string) => {
-    const modifiedText = decodedText.replace(/([A-Za-z]+):/g, '"$1":');
-    setTicket(([ticketBefore]) => [
-      JSON.parse(modifiedText) as Ticket,
-      ticketBefore,
-    ]);
+    console.log(decodedText);
+    //const modifiedText = decodedText.replace(/([A-Za-z]+):/g, '"$1":');
+    try {
+      setTicket(([ticketBefore]) => [
+        JSON.parse(decodedText) as Ticket,
+        ticketBefore,
+      ]);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   /**
@@ -56,6 +61,7 @@ export function CapturePage() {
             ticketId: newTicket.ticketId,
             name: newTicket.name,
             group: newTicket.group,
+            restrictions: newTicket.restrictions,
           };
           await createBallots(ballot);
           setTicket([newTicket, newTicket]);

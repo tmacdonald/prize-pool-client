@@ -9,6 +9,7 @@ export interface Ticket {
   ticketId: number;
   name: string;
   group: string;
+  restrictions?: string[];
 }
 
 export interface Match {
