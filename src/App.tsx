@@ -41,7 +41,7 @@ function App() {
         if (
           !previousTicket ||
           !(
-            previousTicket.participantId === newTicket.participantId &&
+            previousTicket.childId === newTicket.childId &&
             previousTicket.ticketId === newTicket.ticketId
           )
         ) {
