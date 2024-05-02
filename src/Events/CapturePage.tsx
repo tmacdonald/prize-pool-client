@@ -5,8 +5,8 @@ import { useParams } from "react-router";
 import Html5QrcodePlugin from "../components/Html5QrCodePlugin";
 import { PrizeControls } from "../components/PrizeControls";
 import { Ballot } from "../services/BallotStorage";
-import { Ticket } from "../services/api";
 import { useBallotStorage, useEvent, usePrizeStorage } from "./hooks";
+import { Ticket } from "../services/api";
 
 export function CapturePage() {
   const { eventId } = useParams();
@@ -21,6 +21,7 @@ export function CapturePage() {
   >([undefined, undefined]);
 
   const handleScan = (decodedText: string) => {
+    console.log(decodedText);
     setTicket(([ticketBefore]) => [
       JSON.parse(decodedText) as Ticket,
       ticketBefore,
@@ -45,16 +46,16 @@ export function CapturePage() {
         if (
           !previousTicket ||
           !(
-            previousTicket.participantId === newTicket.participantId &&
+            previousTicket.childId === newTicket.childId &&
             previousTicket.ticketId === newTicket.ticketId
           )
         ) {
           const ballot: Ballot = {
             prizeId,
-            participantId: newTicket.participantId,
+            participantId: newTicket.childId,
             ticketId: newTicket.ticketId,
             name: newTicket.name,
-            group: newTicket.homeroom,
+            group: newTicket.group,
           };
           await createBallots(ballot);
           setTicket([newTicket, newTicket]);

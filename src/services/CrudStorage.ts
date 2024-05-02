@@ -26,7 +26,6 @@ export class SimpleLocalStorage<T> implements SimpleStorage<T> {
 
   async create(...newItems: T[]) {
     const existingItems = await this.list();
-    console.log(existingItems, newItems);
     const updatedItems = [...existingItems, ...newItems];
     setItem(this.storageKey, updatedItems);
   }

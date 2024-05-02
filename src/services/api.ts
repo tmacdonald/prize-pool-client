@@ -5,10 +5,10 @@ export interface Ballot extends Ticket {
 }
 
 export interface Ticket {
-  participantId: string;
+  childId: string;
   ticketId: number;
   name: string;
-  homeroom: string;
+  group: string;
 }
 
 export interface Match {
