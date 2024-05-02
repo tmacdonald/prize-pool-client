@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { Matches } from "./Matches";
+// import { Matches } from "./Matches";
 import { GroupedMatches } from "./GroupedMatches";
 
 export const MatchesPage = () => {
