@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import { Add, Clear } from "@mui/icons-material";
 import { groupBy } from "lodash";
+import { QRCodeSVG } from "qrcode.react";
+import { Match } from "../services/MatchStorage";
 
 interface MatchesProps {
   eventId: string;
@@ -47,31 +49,9 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
         <Container>
           <h2>{group}</h2>
         </Container>
-        <TableContainer>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell>Prize</TableCell>
-                <TableCell>Participant</TableCell>
-                <TableCell>Based on Preference</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {groupMatches.map((match) => (
-                <TableRow key={`${match.prizeId}:${match.participantId}`}>
-                  <TableCell>{match.prizeId}</TableCell>
-                  <TableCell>{match.name}</TableCell>
-                  <TableCell>
-                    <Checkbox
-                      checked={match.basedOnPreference}
-                      readOnly={true}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <MatchesTable matches={groupMatches} />
+        <QRCodeSVG size={256} value={JSON.stringify(groupMatches)} />
+        {/* <pre>{JSON.stringify(groupMatches, null, 2)}</pre> */}
       </>
     )
   );
@@ -103,3 +83,32 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
     </>
   );
 };
+
+interface IMatchesTableProps {
+  matches: Match[];
+}
+
+export const MatchesTable = ({ matches }: IMatchesTableProps) => (
+  <TableContainer>
+    <Table stickyHeader>
+      <TableHead>
+        <TableRow>
+          <TableCell>Prize</TableCell>
+          <TableCell>Participant</TableCell>
+          <TableCell>Based on Preference</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {matches.map((match) => (
+          <TableRow key={`${match.prizeId}:${match.participantId}`}>
+            <TableCell>{match.prizeId}</TableCell>
+            <TableCell>{match.name}</TableCell>
+            <TableCell>
+              <Checkbox checked={match.basedOnPreference} readOnly={true} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);

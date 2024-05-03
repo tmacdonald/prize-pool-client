@@ -15,6 +15,7 @@ import { EventsPage } from "./Events/EventsPage.tsx";
 import { PrizesPage } from "./Events/PrizesPage.tsx";
 import { RestrictionsPage } from "./Events/RestrictionsPage.tsx";
 import { AddPrizesPage } from "./Events/AddPrizesPage.tsx";
+import { ScanPage } from "./ScanPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
   { path: "/events/:eventId/prizes/add", element: <AddPrizesPage /> },
   { path: "/events/:eventId/matches", element: <MatchesPage /> },
   { path: "/events/:eventId/capture", element: <CapturePage /> },
+  { path: "/scan", element: <ScanPage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
