@@ -50,7 +50,9 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
           <h2>{group}</h2>
         </Container>
         <MatchesTable matches={groupMatches} />
-        <QRCodeSVG size={256} value={JSON.stringify(groupMatches)} />
+        <Container fixed>
+          <QRCodeSVG size={256} value={JSON.stringify(groupMatches)} />
+        </Container>
         {/* <pre>{JSON.stringify(groupMatches, null, 2)}</pre> */}
       </>
     )
