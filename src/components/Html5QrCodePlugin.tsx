@@ -64,7 +64,9 @@ const Html5QrcodePlugin = ({
 
     // cleanup function when component will unmount
     return () => {
-      html5Qrcode.clear();
+      if (html5Qrcode.isScanning) {
+        html5Qrcode.stop();
+      }
     };
   }, []);
 

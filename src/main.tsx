@@ -17,6 +17,9 @@ import { RestrictionsPage } from "./Events/RestrictionsPage.tsx";
 import { AddPrizesPage } from "./Events/AddPrizesPage.tsx";
 import { ScanPage } from "./ScanPage.tsx";
 import { ManualBallotPage } from "./Events/ManualBallotPage.tsx";
+import { DelegatedCapturePage } from "./Events/Delegate/DelegatedCapturePage.tsx";
+import { DelegatePage } from "./Events/Delegate/DelegatePage.tsx";
+import { DelegatedDisplayPage } from "./Events/Delegate/DelegatedDisplayPage.tsx";
 import { DelegateCapturePage } from "./Events/Delegate/DelegateCapturePage.tsx";
 
 const router = createBrowserRouter([
@@ -35,7 +38,13 @@ const router = createBrowserRouter([
   { path: "/events/:eventId/capture", element: <CapturePage /> },
   { path: "/events/:eventId/capture/manual", element: <ManualBallotPage /> },
   { path: "/scan", element: <ScanPage /> },
-  { path: "/delegate/capture", element: <DelegateCapturePage /> },
+  { path: "/events/:eventId/delegate", element: <DelegatePage /> },
+  {
+    path: "/events/:eventId/delegate/capture",
+    element: <DelegateCapturePage />,
+  },
+  { path: "/delegated/capture", element: <DelegatedCapturePage /> },
+  { path: "/delegated/display", element: <DelegatedDisplayPage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

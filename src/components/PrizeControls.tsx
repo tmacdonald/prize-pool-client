@@ -7,6 +7,7 @@ interface IProps {
   onChange: (newValue: number) => void;
   minPrizeId: number;
   maxPrizeId: number;
+  onComplete?: () => void;
 }
 
 const Wrapper = styled.div`
@@ -26,6 +27,7 @@ export const PrizeControls = ({
   onChange,
   minPrizeId,
   maxPrizeId,
+  onComplete,
 }: IProps) => {
   function decrementPrize() {
     onChange(Math.max(minPrizeId, value - 1));
@@ -46,9 +48,16 @@ export const PrizeControls = ({
           Manual
         </Button> */}
       </div>
-      <Button variant={"contained"} onClick={incrementPrize}>
-        &gt;
-      </Button>
+      {value < maxPrizeId && (
+        <Button variant={"contained"} onClick={incrementPrize}>
+          &gt;
+        </Button>
+      )}
+      {value === maxPrizeId && (
+        <Button variant={"contained"} onClick={onComplete}>
+          Done
+        </Button>
+      )}
     </Wrapper>
   );
 };
