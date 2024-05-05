@@ -26,7 +26,7 @@ export function DelegatedDisplayPage() {
 
   return (
     <Container>
-      {range(start, end).map((prize, i) => {
+      {range(start, end).map((prize) => {
         const prizeBallots = ballotsGroupedByPrize[prize];
         return (
           <QRCodeContainer>

@@ -2,7 +2,6 @@ import { useParams } from "react-router";
 import { useEvent, usePrizeStorage } from "../hooks";
 import { useState } from "react";
 import { Button, Container, TextField } from "@mui/material";
-import { range } from "lodash";
 import { QRCodeSVG } from "qrcode.react";
 
 interface Range {
