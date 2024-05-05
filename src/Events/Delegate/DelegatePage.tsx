@@ -58,7 +58,7 @@ export const DelegatePage = () => {
           <h2>Team {i + 1}</h2>
           <QRCodeSVG
             size={128}
-            value={`https://prize-pool.netlify.app/delegate/capture?start=${start}&end=${end}`}
+            value={`https://prize-pool.netlify.app/delegated/capture?start=${start}&end=${end}`}
           />
         </div>
       ))}
