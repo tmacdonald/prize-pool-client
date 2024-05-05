@@ -65,4 +65,9 @@ const getBallotStorage = (eventId: string) => {
   return new BallotStorage(internalStorage);
 };
 
-export { BallotStorage, getBallotStorage };
+const getDelegatedBallotStorage = () => {
+  const internalStorage = new SimpleLocalStorage<Ballot>("ballots");
+  return new BallotStorage(internalStorage);
+};
+
+export { BallotStorage, getBallotStorage, getDelegatedBallotStorage };

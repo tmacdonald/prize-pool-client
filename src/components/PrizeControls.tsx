@@ -1,4 +1,5 @@
 import { Button, Chip } from "@mui/material";
+// import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 interface IProps {
@@ -39,7 +40,12 @@ export const PrizeControls = ({
       <Button variant={"contained"} onClick={decrementPrize}>
         &lt;
       </Button>
-      <Chip label={`Prize ${value}`} />
+      <div>
+        <Chip label={`Prize ${value}`} />
+        {/* <Button component={Link} to={`./manual?prizeId=${value}`}>
+          Manual
+        </Button> */}
+      </div>
       <Button variant={"contained"} onClick={incrementPrize}>
         &gt;
       </Button>

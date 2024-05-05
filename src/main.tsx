@@ -16,6 +16,8 @@ import { PrizesPage } from "./Events/PrizesPage.tsx";
 import { RestrictionsPage } from "./Events/RestrictionsPage.tsx";
 import { AddPrizesPage } from "./Events/AddPrizesPage.tsx";
 import { ScanPage } from "./ScanPage.tsx";
+import { ManualBallotPage } from "./Events/ManualBallotPage.tsx";
+import { DelegateCapturePage } from "./Events/Delegate/DelegateCapturePage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +33,9 @@ const router = createBrowserRouter([
   { path: "/events/:eventId/prizes/add", element: <AddPrizesPage /> },
   { path: "/events/:eventId/matches", element: <MatchesPage /> },
   { path: "/events/:eventId/capture", element: <CapturePage /> },
+  { path: "/events/:eventId/capture/manual", element: <ManualBallotPage /> },
   { path: "/scan", element: <ScanPage /> },
+  { path: "/delegate/capture", element: <DelegateCapturePage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

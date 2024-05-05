@@ -8,7 +8,10 @@ import {
 import { Event, eventStorage } from "../services/events";
 import { getPrizeStorage } from "../services/prizes";
 import { getMatchStorage } from "../services/MatchStorage";
-import { getBallotStorage } from "../services/BallotStorage";
+import {
+  getBallotStorage,
+  getDelegatedBallotStorage,
+} from "../services/BallotStorage";
 
 export const useEvent = (key: string): UseItemResult<Event> =>
   useItem<string, Event>(eventStorage, key);
@@ -30,6 +33,17 @@ export const usePrizeStorage = (eventId: string) => {
 
 export const useBallotStorage = (eventId: string) => {
   const ballotStorage = useMemo(() => getBallotStorage(eventId), [eventId]);
+  const {
+    items: ballots,
+    createItem: createBallots,
+    deleteAllItems: deleteAllBallots,
+  } = useSimpleCrudStorage(ballotStorage);
+
+  return { ballots, createBallots, deleteAllBallots };
+};
+
+export const useDelegatedBallotStorage = () => {
+  const ballotStorage = useMemo(() => getDelegatedBallotStorage(), []);
   const {
     items: ballots,
     createItem: createBallots,
