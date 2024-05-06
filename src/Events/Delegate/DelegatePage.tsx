@@ -1,8 +1,27 @@
 import { useParams } from "react-router";
 import { useEvent, usePrizeStorage } from "../hooks";
 import { useState } from "react";
-import { Button, Container, TextField } from "@mui/material";
+import { Button, Container, Link, TextField } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
+import styled from "styled-components";
+
+const Root = styled(Container)`
+  padding: 12px;
+`;
+
+const Ranges = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 25vh;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block-end: 12px;
+`;
 
 interface Range {
   start: number;
@@ -23,7 +42,6 @@ export const DelegatePage = () => {
 
     const quotient = Math.floor(prizes.length / numberOfDelegates);
     const remainder = prizes.length % numberOfDelegates;
-    console.log(quotient, remainder);
 
     let newRanges: Range[] = [];
     let sum = 0;
@@ -40,28 +58,34 @@ export const DelegatePage = () => {
   }
 
   return (
-    <Container>
-      <form onSubmit={handleSubmit}>
+    <Root>
+      <Form onSubmit={handleSubmit}>
         <TextField
           id="numberOfDelegates"
-          label="Number of delegates"
+          label="Number of teams"
           value={numberOfDelegates}
           onChange={(e) => setNumberOfDelegates(parseInt(e.target.value, 10))}
         />
         <Button variant={"contained"} type={"submit"}>
           Create
         </Button>
-      </form>
+      </Form>
 
-      {ranges.map(({ start, end }, i) => (
-        <div>
-          <h2>Team {i + 1}</h2>
-          <QRCodeSVG
-            size={128}
-            value={`https://prize-pool.netlify.app/delegated/capture?start=${start}&end=${end}`}
-          />
-        </div>
-      ))}
-    </Container>
+      <Link component={RouterLink} to="./capture">
+        Capture from teams
+      </Link>
+
+      <Ranges>
+        {ranges.map(({ start, end }, i) => (
+          <div>
+            <h2>Team {i + 1}</h2>
+            <QRCodeSVG
+              size={128}
+              value={`https://prize-pool.netlify.app/delegated/capture?start=${start}&end=${end}`}
+            />
+          </div>
+        ))}
+      </Ranges>
+    </Root>
   );
 };

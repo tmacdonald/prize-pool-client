@@ -2,15 +2,17 @@ import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
 import { useParams } from "react-router-dom";
 import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
-import { useEvent } from "../hooks";
+import { useBallotStorage, useEvent } from "../hooks";
 
 export function DelegateCapturePage() {
   const { eventId } = useParams();
   const { item: event } = useEvent(eventId!);
-  // const { createBallots } = useBallotStorage(eventId!);
+  const { createBallots } = useBallotStorage(eventId!);
 
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
+    const ballots = JSON.parse(decodedText);
+    createBallots(...ballots);
   };
 
   const handleError: QrcodeErrorCallback = (

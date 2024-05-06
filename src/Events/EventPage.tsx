@@ -13,6 +13,7 @@ import {
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useEvent } from "./hooks";
+import { Groups } from "@mui/icons-material";
 
 export const EventPage = () => {
   const { eventId } = useParams();
@@ -57,6 +58,12 @@ export const EventPage = () => {
                 <JoinInnerIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Matches</ListItemText>
+            </MenuItem>
+            <MenuItem component={Link} to={"./teams"}>
+              <ListItemIcon>
+                <Groups fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Teams</ListItemText>
             </MenuItem>
           </MenuList>
         </Paper>

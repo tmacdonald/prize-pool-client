@@ -38,9 +38,9 @@ const router = createBrowserRouter([
   { path: "/events/:eventId/capture", element: <CapturePage /> },
   { path: "/events/:eventId/capture/manual", element: <ManualBallotPage /> },
   { path: "/scan", element: <ScanPage /> },
-  { path: "/events/:eventId/delegate", element: <DelegatePage /> },
+  { path: "/events/:eventId/teams", element: <DelegatePage /> },
   {
-    path: "/events/:eventId/delegate/capture",
+    path: "/events/:eventId/teams/capture",
     element: <DelegateCapturePage />,
   },
   { path: "/delegated/capture", element: <DelegatedCapturePage /> },
