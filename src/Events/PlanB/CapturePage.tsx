@@ -87,7 +87,7 @@ export function CapturePage() {
           };
 
           await createMatches(match);
-          setTicket([newTicket, newTicket]);
+          setTicket([undefined, undefined]);
 
           setSnackbarMessage("Match!");
           setSnackbarOpen(true);
