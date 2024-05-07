@@ -1,19 +1,19 @@
 import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import Html5QrcodePlugin from "../components/Html5QrCodePlugin";
-import { PrizeControls } from "../components/PrizeControls";
-import { Ballot } from "../services/BallotStorage";
-import { useBallotStorage, useEvent, usePrizeStorage } from "./hooks";
-import { Ticket } from "../services/api";
+import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
+import { PrizeControls } from "../../components/PrizeControls";
+import { Ticket } from "../../services/api";
 import { Snackbar } from "@mui/material";
+import { useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
+import { useParams } from "react-router";
+import { Match } from "../../services/MatchStorage";
 
 export function CapturePage() {
   const { eventId } = useParams();
   const event = useEvent(eventId!);
 
-  const { createBallots } = useBallotStorage(eventId!);
+  const { matches, createMatches } = useMatchStorage(eventId!);
   const { prizes } = usePrizeStorage(eventId!);
 
   const [prizeId, setPrizeId] = useState<number>(1);
@@ -26,7 +26,6 @@ export function CapturePage() {
 
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
-    //const modifiedText = decodedText.replace(/([A-Za-z]+):/g, '"$1":');
     try {
       setTicket(([ticketBefore]) => [
         JSON.parse(decodedText) as Ticket,
@@ -61,18 +60,34 @@ export function CapturePage() {
             previousTicket.ticketId === newTicket.ticketId
           )
         ) {
-          const ballot: Ballot = {
+          // has participant won?
+          const prizeWon = matches.some((match) => match.prizeId === prizeId);
+          const participantWon = matches.some(
+            (match) => match.participantId === newTicket.childId
+          );
+
+          if (prizeWon) {
+            setSnackbarMessage("Cake has already been won");
+            setSnackbarOpen(true);
+          }
+
+          if (participantWon) {
+            setSnackbarMessage("Participant has already won a cake");
+            setSnackbarOpen(true);
+          }
+
+          const match: Match = {
             prizeId,
             participantId: newTicket.childId,
-            ticketId: newTicket.ticketId,
             name: newTicket.name,
             group: newTicket.group,
-            restrictions: newTicket.restrictions,
+            basedOnPreference: false,
           };
-          await createBallots(ballot);
+
+          await createMatches(match);
           setTicket([newTicket, newTicket]);
 
-          setSnackbarMessage("Created ballot");
+          setSnackbarMessage("Match!");
           setSnackbarOpen(true);
         }
       }

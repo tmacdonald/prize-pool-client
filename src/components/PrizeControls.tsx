@@ -43,10 +43,7 @@ export const PrizeControls = ({
         &lt;
       </Button>
       <div>
-        <Chip label={`Prize ${value}`} />
-        {/* <Button component={Link} to={`./manual?prizeId=${value}`}>
-          Manual
-        </Button> */}
+        <Chip color={"primary"} label={`Prize ${value}`} />
       </div>
       {value < maxPrizeId && (
         <Button variant={"contained"} onClick={incrementPrize}>
