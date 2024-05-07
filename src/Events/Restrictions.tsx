@@ -1,6 +1,6 @@
 import { Box, Button, Chip, Container, TextField } from "@mui/material";
 import { useState } from "react";
-import { Event } from "../services/events";
+import { Event } from "../services/EventStorage";
 import { saveEvent, useEvent } from "./hooks";
 
 interface RestrictionsProps {

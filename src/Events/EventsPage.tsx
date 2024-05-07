@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useCrudStorage } from "../services/hooks";
-import { eventStorage } from "../services/events";
+import { eventStorage } from "../services/EventStorage";
 import { Add } from "@mui/icons-material";
 
 export const EventsPage = () => {

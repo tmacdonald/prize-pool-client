@@ -15,7 +15,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Prize } from "../services/prizes";
+import { Prize } from "../services/PrizeStorage";
 import { useEvent, usePrizeStorage } from "./hooks";
 import { useNavigate } from "react-router";
 
@@ -90,6 +90,7 @@ export const Prizes = ({ eventId }: PrizesProps) => {
                 <TableCell>{prize.id}</TableCell>
                 <TableCell>
                   <ToggleButtonGroup
+                    color={"primary"}
                     value={prize.freeFromRestrictions}
                     onChange={(
                       _event: React.MouseEvent<HTMLElement>,

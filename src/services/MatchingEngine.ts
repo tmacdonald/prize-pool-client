@@ -8,7 +8,7 @@ import {
   partition,
 } from "lodash";
 import { Ballot } from "./BallotStorage";
-import { Prize } from "./prizes";
+import { Prize } from "./PrizeStorage";
 import { Match } from "./MatchStorage";
 
 interface PrizeWithBallot extends Prize {

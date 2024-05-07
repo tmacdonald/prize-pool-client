@@ -5,8 +5,8 @@ import {
   useItem,
   useSimpleCrudStorage,
 } from "../services/hooks";
-import { Event, eventStorage } from "../services/events";
-import { getPrizeStorage } from "../services/prizes";
+import { Event, eventStorage } from "../services/EventStorage";
+import { getPrizeStorage } from "../services/PrizeStorage";
 import { getMatchStorage } from "../services/MatchStorage";
 import {
   getBallotStorage,

@@ -86,6 +86,11 @@ export const DelegatePage = () => {
               size={128}
               value={`https://prize-pool.netlify.app/delegated/capture?start=${start}&end=${end}`}
             />
+            <a
+              href={`http://localhost:5173/delegated/capture?start=${start}&end=${end}`}
+            >
+              Link
+            </a>
           </div>
         ))}
       </Ranges>

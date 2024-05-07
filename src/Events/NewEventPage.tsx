@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { eventStorage } from "../services/events";
+import { eventStorage } from "../services/EventStorage";
 import { useNavigate } from "react-router";
 import { useCrudStorage } from "../services/hooks";
 import { Button, Container, TextField } from "@mui/material";

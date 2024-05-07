@@ -1,11 +1,29 @@
 import { groupBy, range } from "lodash";
 import { useDelegatedBallotStorage } from "../hooks";
 import { QRCodeSVG } from "qrcode.react";
-import { Container } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Card,
+  CardContent,
+  Container,
+  Typography,
+} from "@mui/material";
 import styled from "styled-components";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+const Prizes = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 12px 0;
+`;
 
 const QRCodeContainer = styled.div`
-  margin-bottom: 30vh;
+  margin: 12px auto;
+  text-align: center;
 `;
 
 export function DelegatedDisplayPage() {
@@ -26,15 +44,39 @@ export function DelegatedDisplayPage() {
 
   return (
     <Container>
-      {range(start, end).map((prize) => {
-        const prizeBallots = ballotsGroupedByPrize[prize];
-        return (
-          <QRCodeContainer>
-            <h2>Prize {prize}</h2>
-            <QRCodeSVG value={JSON.stringify(prizeBallots)} />
-          </QRCodeContainer>
-        );
-      })}
+      <Prizes>
+        {range(start, end).map((prize) => {
+          const prizeBallots = ballotsGroupedByPrize[prize];
+          return (
+            <Card key={prize} sx={{ minWidth: 275 }}>
+              <CardContent>
+                <Typography variant="h5" component="div">
+                  Prize {prize}
+                </Typography>
+                <QRCodeContainer>
+                  <QRCodeSVG value={JSON.stringify(prizeBallots)} />
+                </QRCodeContainer>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  {`${prizeBallots.length} tickets scanned`}
+                </Typography>
+              </CardContent>
+
+              <Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
+                >
+                  Advanced
+                </AccordionSummary>
+                <AccordionDetails>
+                  <pre>{JSON.stringify(prizeBallots, null, 2)}</pre>
+                </AccordionDetails>
+              </Accordion>
+            </Card>
+          );
+        })}
+      </Prizes>
     </Container>
   );
 }

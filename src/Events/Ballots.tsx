@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import { useMemo } from "react";
 import { getBallotStorage } from "../services/BallotStorage";
 import { useCrudStorage, useSimpleCrudStorage } from "../services/hooks";
-import { getPrizeStorage } from "../services/prizes";
+import { getPrizeStorage } from "../services/PrizeStorage";
 import { useEvent } from "./hooks";
 import { AddToPhotos, Clear } from "@mui/icons-material";
 

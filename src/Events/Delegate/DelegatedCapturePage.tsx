@@ -5,8 +5,8 @@ import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
 import { PrizeControls } from "../../components/PrizeControls";
 import { Ballot } from "../../services/BallotStorage";
 import { Ticket } from "../../services/api";
-import { Snackbar } from "@mui/material";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button, Snackbar } from "@mui/material";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDelegatedBallotStorage } from "../hooks";
 
 export function DelegatedCapturePage() {
@@ -15,7 +15,7 @@ export function DelegatedCapturePage() {
   const start = parseInt(searchParams.get("start") ?? "1", 10);
   const end = parseInt(searchParams.get("end") ?? "1", 10);
 
-  const { createBallots } = useDelegatedBallotStorage();
+  const { createBallots, deleteAllBallots } = useDelegatedBallotStorage();
 
   const [prizeId, setPrizeId] = useState<number>(start);
   const [ticket, setTicket] = useState<
@@ -102,6 +102,10 @@ export function DelegatedCapturePage() {
           onScan={handleScan}
           onError={handleError}
         />
+        <Button component={Link} to={"../delegated/display"}>
+          Results
+        </Button>
+        <Button onClick={() => deleteAllBallots()}>Clear</Button>
         <PrizeControls
           value={prizeId}
           onChange={setPrizeId}

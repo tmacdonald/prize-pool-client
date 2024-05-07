@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { generateMatches } from "../services/match";
+import { generateMatches } from "../services/MatchingEngine";
 import { useBallotStorage, useMatchStorage, usePrizeStorage } from "./hooks";
 import {
   Checkbox,
