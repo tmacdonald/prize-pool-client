@@ -4,6 +4,7 @@ import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import CameraIcon from "@mui/icons-material/Camera";
 import {
   Container,
+  Divider,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -64,6 +65,13 @@ export const EventPage = () => {
                 <Groups fontSize="small" />
               </ListItemIcon>
               <ListItemText>Teams</ListItemText>
+            </MenuItem>
+            <Divider />
+            <MenuItem component={Link} to={"./planb/capture"}>
+              <ListItemIcon>
+                <Groups fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Plan B</ListItemText>
             </MenuItem>
           </MenuList>
         </Paper>
