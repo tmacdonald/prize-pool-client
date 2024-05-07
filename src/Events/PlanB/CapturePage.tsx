@@ -69,11 +69,13 @@ export function CapturePage() {
           if (prizeWon) {
             setSnackbarMessage("Cake has already been won");
             setSnackbarOpen(true);
+            return;
           }
 
           if (participantWon) {
             setSnackbarMessage("Participant has already won a cake");
             setSnackbarOpen(true);
+            return;
           }
 
           const match: Match = {
