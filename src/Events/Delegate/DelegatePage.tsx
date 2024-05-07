@@ -33,19 +33,22 @@ export const DelegatePage = () => {
   const { item: event } = useEvent(eventId!);
   const { prizes } = usePrizeStorage(eventId!);
 
-  const [numberOfDelegates, setNumberOfDelegates] = useState<number>(0);
+  const [numberOfDelegates, setNumberOfDelegates] = useState<
+    string | undefined
+  >(undefined);
 
   const [ranges, setRanges] = useState<Range[]>([]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const quotient = Math.floor(prizes.length / numberOfDelegates);
-    const remainder = prizes.length % numberOfDelegates;
+    const parsedNumberOfDelegates = parseInt(numberOfDelegates ?? "0", 10);
+    const quotient = Math.floor(prizes.length / parsedNumberOfDelegates);
+    const remainder = prizes.length % parsedNumberOfDelegates;
 
     let newRanges: Range[] = [];
     let sum = 0;
-    for (let i = 1; i <= numberOfDelegates; i++) {
+    for (let i = 1; i <= parsedNumberOfDelegates; i++) {
       const amount = quotient + (i <= remainder ? 1 : 0);
       newRanges.push({ start: 1 + sum, end: sum + amount });
       sum += amount;
@@ -64,7 +67,7 @@ export const DelegatePage = () => {
           id="numberOfDelegates"
           label="Number of teams"
           value={numberOfDelegates}
-          onChange={(e) => setNumberOfDelegates(parseInt(e.target.value, 10))}
+          onChange={(e) => setNumberOfDelegates(e.target.value)}
         />
         <Button variant={"contained"} type={"submit"}>
           Create
