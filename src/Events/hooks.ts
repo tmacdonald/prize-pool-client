@@ -12,6 +12,7 @@ import {
   getBallotStorage,
   getDelegatedBallotStorage,
 } from "../services/BallotStorage";
+import beep from "../assets/654321__gronkjaer__correctch_new.mp3";
 
 export const useEvent = (key: string): UseItemResult<Event> =>
   useItem<string, Event>(eventStorage, key);
@@ -62,4 +63,9 @@ export const useMatchStorage = (eventId: string) => {
   } = useSimpleCrudStorage(matchStorage);
 
   return { matches, createMatches, deleteAllMatches };
+};
+
+export const useBeep = () => {
+  const audio = useMemo(() => new Audio(beep), []);
+  return () => audio.play();
 };

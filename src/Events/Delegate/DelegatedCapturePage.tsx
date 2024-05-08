@@ -7,7 +7,7 @@ import { Ballot } from "../../services/BallotStorage";
 import { Ticket } from "../../services/api";
 import { Button, Snackbar } from "@mui/material";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useDelegatedBallotStorage } from "../hooks";
+import { useBeep, useDelegatedBallotStorage } from "../hooks";
 
 export function DelegatedCapturePage() {
   const navigate = useNavigate();
@@ -25,13 +25,12 @@ export function DelegatedCapturePage() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
+  const playBeep = useBeep();
+
   const handleScan = (decodedText: string) => {
-    console.log(decodedText);
+    const newTicket = JSON.parse(decodedText) as Ticket;
     try {
-      setTicket(([ticketBefore]) => [
-        JSON.parse(decodedText) as Ticket,
-        ticketBefore,
-      ]);
+      setTicket(([ticketBefore]) => [newTicket, ticketBefore]);
     } catch (error) {
       console.error(error);
       setSnackbarMessage(`${error}`);
@@ -78,6 +77,9 @@ export function DelegatedCapturePage() {
 
           setSnackbarMessage("Created ballot");
           setSnackbarOpen(true);
+
+          playBeep();
+          setTicket([newTicket, newTicket]);
         }
       }
     };

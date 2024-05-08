@@ -5,10 +5,10 @@ import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
 import { PrizeControls } from "../../components/PrizeControls";
 import { Ticket } from "../../services/api";
 import { Snackbar } from "@mui/material";
-import { useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
+import { useBeep, useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
 import { useParams } from "react-router";
 import { Match } from "../../services/MatchStorage";
-import beep from "../../assets/654321__gronkjaer__correctch_new.mp3";
+import { intersection, keyBy } from "lodash";
 
 export function CapturePage() {
   const { eventId } = useParams();
@@ -16,6 +16,7 @@ export function CapturePage() {
 
   const { matches, createMatches } = useMatchStorage(eventId!);
   const { prizes } = usePrizeStorage(eventId!);
+  const prizeLookup = keyBy(prizes, "id");
 
   const [prizeId, setPrizeId] = useState<number>(1);
   const [ticket, setTicket] = useState<
@@ -25,7 +26,7 @@ export function CapturePage() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const audio = useMemo(() => new Audio(beep), []);
+  const playBeep = useBeep();
 
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
@@ -62,15 +63,13 @@ export function CapturePage() {
             previousTicket.ticketId === newTicket.ticketId
           )
         ) {
-          console.log("processing ticket");
+          setTicket([newTicket, newTicket]);
 
           // has participant won?
           const prizeWon = matches.some((match) => match.prizeId === prizeId);
           const participantWon = matches.some(
             (match) => match.participantId === newTicket.childId
           );
-
-          console.log({ prizeWon, participantWon });
 
           if (prizeWon) {
             setSnackbarMessage("Cake has already been won");
@@ -84,6 +83,28 @@ export function CapturePage() {
             return;
           }
 
+          const prize = prizeLookup[prizeId];
+          console.log(
+            newTicket.restrictions,
+            intersection(
+              prize.freeFromRestrictions ?? [],
+              newTicket.restrictions ?? []
+            )
+          );
+          if (
+            (newTicket.restrictions?.length ?? 0) > 0 &&
+            intersection(
+              prize.freeFromRestrictions ?? [],
+              newTicket.restrictions ?? []
+            ).length !== (newTicket.restrictions?.length ?? 0)
+          ) {
+            setSnackbarMessage(
+              "Cake has allergens not allowed for participant"
+            );
+            setSnackbarOpen(true);
+            return;
+          }
+
           const match: Match = {
             prizeId,
             participantId: newTicket.childId,
@@ -92,13 +113,11 @@ export function CapturePage() {
             basedOnPreference: false,
           };
 
-          audio.play();
           await createMatches(match);
+          playBeep();
 
           setSnackbarMessage("Match!");
           setSnackbarOpen(true);
-
-          setTicket([newTicket, newTicket]);
         }
       }
     };

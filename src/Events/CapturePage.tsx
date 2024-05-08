@@ -1,11 +1,11 @@
 import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import Html5QrcodePlugin from "../components/Html5QrCodePlugin";
 import { PrizeControls } from "../components/PrizeControls";
 import { Ballot } from "../services/BallotStorage";
-import { useBallotStorage, useEvent, usePrizeStorage } from "./hooks";
+import { useBallotStorage, useBeep, useEvent, usePrizeStorage } from "./hooks";
 import { Ticket } from "../services/api";
 import { Snackbar } from "@mui/material";
 
@@ -24,14 +24,14 @@ export function CapturePage() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
+  const playBeep = useBeep();
+
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
-    //const modifiedText = decodedText.replace(/([A-Za-z]+):/g, '"$1":');
+    const newTicket = JSON.parse(decodedText) as Ticket;
+
     try {
-      setTicket(([ticketBefore]) => [
-        JSON.parse(decodedText) as Ticket,
-        ticketBefore,
-      ]);
+      setTicket(([ticketBefore]) => [newTicket, ticketBefore]);
     } catch (error) {
       console.error(error);
       setSnackbarMessage(`${error}`);
@@ -74,6 +74,10 @@ export function CapturePage() {
 
           setSnackbarMessage("Created ballot");
           setSnackbarOpen(true);
+
+          playBeep();
+
+          setTicket([newTicket, newTicket]);
         }
       }
     };
