@@ -1,14 +1,14 @@
+import { Snackbar } from "@mui/material";
 import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
-import { useEffect, useMemo, useState } from "react";
+import { intersection, keyBy } from "lodash";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
 import { PrizeControls } from "../../components/PrizeControls";
-import { Ticket } from "../../services/api";
-import { Snackbar } from "@mui/material";
-import { useBeep, useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
-import { useParams } from "react-router";
 import { Match } from "../../services/MatchStorage";
-import { intersection, keyBy } from "lodash";
+import { Ticket } from "../../services/api";
+import { useBeep, useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
 
 export function CapturePage() {
   const { eventId } = useParams();
