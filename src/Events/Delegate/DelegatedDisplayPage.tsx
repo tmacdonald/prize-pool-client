@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { minifyBallot } from "../../services/BallotStorage";
 
 const Prizes = styled.div`
   display: flex;
@@ -54,7 +55,9 @@ export function DelegatedDisplayPage() {
                   Prize {prize}
                 </Typography>
                 <QRCodeContainer>
-                  <QRCodeSVG value={JSON.stringify(prizeBallots)} />
+                  <QRCodeSVG
+                    value={JSON.stringify(prizeBallots.map(minifyBallot))}
+                  />
                 </QRCodeContainer>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                   {`${prizeBallots.length} tickets scanned`}
