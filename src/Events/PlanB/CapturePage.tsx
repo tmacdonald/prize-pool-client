@@ -8,6 +8,8 @@ import { Snackbar } from "@mui/material";
 import { useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
 import { useParams } from "react-router";
 import { Match } from "../../services/MatchStorage";
+import useSound from "use-sound";
+import beep from "../../assets/654321__gronkjaer__correctch_new.mp3";
 
 export function CapturePage() {
   const { eventId } = useParams();
@@ -23,6 +25,8 @@ export function CapturePage() {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const [playBeep] = useSound(beep);
 
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
@@ -86,6 +90,7 @@ export function CapturePage() {
             basedOnPreference: false,
           };
 
+          playBeep();
           await createMatches(match);
           setTicket([undefined, undefined]);
 
