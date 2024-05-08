@@ -97,6 +97,8 @@ export function CapturePage() {
 
           setSnackbarMessage("Match!");
           setSnackbarOpen(true);
+
+          setTicket([newTicket, newTicket]);
         }
       }
     };
