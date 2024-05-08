@@ -1,6 +1,6 @@
 import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
 import { PrizeControls } from "../../components/PrizeControls";
 import { Ticket } from "../../services/api";
@@ -8,7 +8,6 @@ import { Snackbar } from "@mui/material";
 import { useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
 import { useParams } from "react-router";
 import { Match } from "../../services/MatchStorage";
-import useSound from "use-sound";
 import beep from "../../assets/654321__gronkjaer__correctch_new.mp3";
 
 export function CapturePage() {
@@ -26,7 +25,7 @@ export function CapturePage() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const [playBeep] = useSound(beep);
+  const audio = useMemo(() => new Audio(beep), []);
 
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
@@ -90,7 +89,7 @@ export function CapturePage() {
             basedOnPreference: false,
           };
 
-          playBeep();
+          audio.play();
           await createMatches(match);
           setTicket([undefined, undefined]);
 
