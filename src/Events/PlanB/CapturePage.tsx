@@ -30,10 +30,8 @@ export function CapturePage() {
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
     try {
-      setTicket(([ticketBefore]) => [
-        JSON.parse(decodedText) as Ticket,
-        ticketBefore,
-      ]);
+      const newTicket = JSON.parse(decodedText) as Ticket;
+      setTicket(([ticketBefore]) => [newTicket, ticketBefore]);
     } catch (error) {
       console.error(error);
       setSnackbarMessage(`${error}`);
@@ -55,6 +53,7 @@ export function CapturePage() {
        * want to bring in a new library
        */
       const [newTicket, previousTicket] = ticket;
+      console.log({ newTicket, previousTicket });
       if (!!newTicket) {
         if (
           !previousTicket ||
@@ -63,11 +62,15 @@ export function CapturePage() {
             previousTicket.ticketId === newTicket.ticketId
           )
         ) {
+          console.log("processing ticket");
+
           // has participant won?
           const prizeWon = matches.some((match) => match.prizeId === prizeId);
           const participantWon = matches.some(
             (match) => match.participantId === newTicket.childId
           );
+
+          console.log({ prizeWon, participantWon });
 
           if (prizeWon) {
             setSnackbarMessage("Cake has already been won");
@@ -91,7 +94,6 @@ export function CapturePage() {
 
           audio.play();
           await createMatches(match);
-          setTicket([undefined, undefined]);
 
           setSnackbarMessage("Match!");
           setSnackbarOpen(true);
