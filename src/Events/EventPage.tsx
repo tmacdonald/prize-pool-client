@@ -14,7 +14,7 @@ import {
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useEvent } from "./hooks";
-import { Groups } from "@mui/icons-material";
+import { Groups, Key, QueryStats } from "@mui/icons-material";
 
 export const EventPage = () => {
   const { eventId } = useParams();
@@ -32,7 +32,7 @@ export const EventPage = () => {
           <MenuList>
             <MenuItem component={Link} to={"./restrictions"}>
               <ListItemIcon>
-                <CakeIcon fontSize="small" />
+                <Key fontSize="small" />
               </ListItemIcon>
               <ListItemText>Restrictions</ListItemText>
             </MenuItem>
@@ -66,10 +66,16 @@ export const EventPage = () => {
               </ListItemIcon>
               <ListItemText>Teams</ListItemText>
             </MenuItem>
+            <MenuItem component={Link} to={"./prizes/stats"}>
+              <ListItemIcon>
+                <QueryStats fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Prize Stats</ListItemText>
+            </MenuItem>
             <Divider />
             <MenuItem component={Link} to={"./planb/capture"}>
               <ListItemIcon>
-                <Groups fontSize="small" />
+                <CameraIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Plan B</ListItemText>
             </MenuItem>

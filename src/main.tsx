@@ -22,6 +22,7 @@ import { DelegatePage } from "./Events/Delegate/DelegatePage.tsx";
 import { DelegatedDisplayPage } from "./Events/Delegate/DelegatedDisplayPage.tsx";
 import { DelegateCapturePage } from "./Events/Delegate/DelegateCapturePage.tsx";
 import { CapturePage as PlanBCapturePage } from "./Events/PlanB/CapturePage.tsx";
+import { PrizeStatsPage } from "./Events/PrizeStatsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
   { path: "/delegated/capture", element: <DelegatedCapturePage /> },
   { path: "/delegated/display", element: <DelegatedDisplayPage /> },
 
+  { path: "/events/:eventId/prizes/stats", element: <PrizeStatsPage /> },
   { path: "/events/:eventId/planb/capture", element: <PlanBCapturePage /> },
 ]);
 
