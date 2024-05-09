@@ -16,8 +16,9 @@ import {
   Clear,
   Download,
   MobileScreenShare,
+  Upload,
 } from "@mui/icons-material";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const numGroups = 10;
 const numParticipants = 100;
@@ -25,6 +26,7 @@ const numBallotsPerParticipant = 10;
 
 export const BallotsPage = () => {
   const { eventId } = useParams();
+  const navigate = useNavigate();
   const ballotStorage = useMemo(() => getBallotStorage(eventId!), [eventId]);
   const prizeStorage = useMemo(() => getPrizeStorage(eventId!), [eventId]);
 
@@ -86,6 +88,10 @@ export const BallotsPage = () => {
     navigator.share({ text: JSON.stringify(ballots) });
   };
 
+  const handleImport = () => {
+    navigate("./import");
+  };
+
   return (
     <>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -122,10 +128,16 @@ export const BallotsPage = () => {
         icon={<SpeedDialIcon />}
       >
         <SpeedDialAction
-          key={"download"}
+          key={"export"}
           icon={<Download />}
-          tooltipTitle={"download"}
+          tooltipTitle={"export"}
           onClick={handleDownload}
+        />
+        <SpeedDialAction
+          key={"import"}
+          icon={<Upload />}
+          tooltipTitle={"import"}
+          onClick={handleImport}
         />
         <SpeedDialAction
           key={"share"}

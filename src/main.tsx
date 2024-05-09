@@ -24,6 +24,7 @@ import { DelegateCapturePage } from "./Events/Delegate/DelegateCapturePage.tsx";
 import { CapturePage as PlanBCapturePage } from "./Events/PlanB/CapturePage.tsx";
 import { PrizeStatsPage } from "./Events/PrizeStatsPage.tsx";
 import { ExportPage } from "./Events/ExportPage.tsx";
+import { ImportBallotsPage } from "./Events/ImportBallotsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
   { path: "/events/:eventId", element: <EventPage /> },
   { path: "/events/:eventId/restrictions", element: <RestrictionsPage /> },
   { path: "/events/:eventId/ballots", element: <BallotsPage /> },
+  { path: "/events/:eventId/ballots/import", element: <ImportBallotsPage /> },
   { path: "/events/:eventId/prizes", element: <PrizesPage /> },
   { path: "/events/:eventId/prizes/add", element: <AddPrizesPage /> },
   { path: "/events/:eventId/matches", element: <MatchesPage /> },
