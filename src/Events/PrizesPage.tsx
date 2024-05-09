@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
-import { AddToPhotos } from "@mui/icons-material";
+import { AddToPhotos, Download, MobileScreenShare } from "@mui/icons-material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -71,6 +71,14 @@ export const PrizesPage = () => {
     updatePrize(newPrize.id, newPrize);
   };
 
+  const handleDownload = () => {
+    navigator.clipboard.writeText(JSON.stringify(prizes));
+  };
+
+  const handleShare = () => {
+    navigator.share({ text: JSON.stringify(prizes) });
+  };
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -121,6 +129,18 @@ export const PrizesPage = () => {
           icon={<AddIcon />}
           tooltipTitle={"add"}
           onClick={handleAddPrizes}
+        />
+        <SpeedDialAction
+          key={"download"}
+          icon={<Download />}
+          tooltipTitle={"download"}
+          onClick={handleDownload}
+        />
+        <SpeedDialAction
+          key={"share"}
+          icon={<MobileScreenShare />}
+          tooltipTitle={"share"}
+          onClick={handleShare}
         />
         <SpeedDialAction
           key={"remove"}

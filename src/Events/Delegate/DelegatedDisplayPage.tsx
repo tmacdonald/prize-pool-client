@@ -1,6 +1,4 @@
-import { groupBy, range } from "lodash";
-import { useDelegatedBallotStorage } from "../hooks";
-import { QRCodeSVG } from "qrcode.react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
   AccordionDetails,
@@ -10,9 +8,10 @@ import {
   Container,
   Typography,
 } from "@mui/material";
+import { groupBy, range } from "lodash";
+import { QRCodeCanvas } from "qrcode.react";
 import styled from "styled-components";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { minifyBallot } from "../../services/BallotStorage";
+import { useDelegatedBallotStorage } from "../hooks";
 
 const Prizes = styled.div`
   display: flex;
@@ -55,8 +54,10 @@ export function DelegatedDisplayPage() {
                   Prize {prize}
                 </Typography>
                 <QRCodeContainer>
-                  <QRCodeSVG
-                    value={JSON.stringify(prizeBallots.map(minifyBallot))}
+                  <QRCodeCanvas
+                    size={256}
+                    level={"H"}
+                    value={JSON.stringify(prizeBallots)}
                   />
                 </QRCodeContainer>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">

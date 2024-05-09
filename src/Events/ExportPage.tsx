@@ -18,7 +18,7 @@ const Stack = styled.div`
 
 export const ExportPage = () => {
   const { eventId } = useParams();
-  const event = useEvent(eventId!);
+  const { item: event } = useEvent(eventId!);
 
   const { prizes } = usePrizeStorage(eventId!);
   const { ballots } = useBallotStorage(eventId!);

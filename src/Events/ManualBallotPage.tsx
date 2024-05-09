@@ -52,7 +52,7 @@ export const ManualBallotPage = () => {
       name,
       group,
       prizeId,
-      ticketId: 1,
+      ticketId: "1",
     };
     createBallots(ballot);
   };

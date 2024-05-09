@@ -3,58 +3,12 @@ import { SimpleStorage, SimpleLocalStorage } from "./CrudStorage";
 export interface Ballot {
   participantId: string;
   prizeId: number;
-  ticketId: number;
+  ticketId: string;
   name: string;
   group?: string;
 
   restrictions?: string[];
 }
-
-export interface MinifiedBallot {
-  pa: string;
-  pr: number;
-  t: number;
-  n: string;
-  g?: string;
-
-  r?: string[];
-}
-
-export const minifyBallot = ({
-  participantId,
-  prizeId,
-  ticketId,
-  name,
-  group,
-  restrictions,
-}: Ballot): MinifiedBallot => {
-  return {
-    pa: participantId,
-    pr: prizeId,
-    t: ticketId,
-    n: name,
-    g: group,
-    r: restrictions,
-  };
-};
-
-export const unminifyBallot = ({
-  pa,
-  pr,
-  t,
-  n,
-  g,
-  r,
-}: MinifiedBallot): Ballot => {
-  return {
-    participantId: pa,
-    prizeId: pr,
-    ticketId: t,
-    name: n,
-    group: g,
-    restrictions: r,
-  };
-};
 
 const createSetKey = (ballot: Ballot): string =>
   `${ballot.participantId}:${ballot.ticketId}`;

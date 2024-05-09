@@ -14,9 +14,8 @@ import {
   SpeedDialAction,
   SpeedDialIcon,
 } from "@mui/material";
-import { Add, Clear } from "@mui/icons-material";
+import { Add, Clear, Download, MobileScreenShare } from "@mui/icons-material";
 import { groupBy } from "lodash";
-import { QRCodeSVG } from "qrcode.react";
 import { Match } from "../services/MatchStorage";
 
 interface MatchesProps {
@@ -41,6 +40,14 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
     deleteAllMatches();
   };
 
+  const handleDownload = () => {
+    navigator.clipboard.writeText(JSON.stringify(matches));
+  };
+
+  const handleShare = () => {
+    navigator.share({ text: JSON.stringify(matches) });
+  };
+
   const groupedMatches = groupBy(matches, "group");
 
   const matchTables = Object.entries(groupedMatches).map(
@@ -50,9 +57,9 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
           <h2>{group}</h2>
         </Container>
         <MatchesTable matches={groupMatches} />
-        <Container fixed>
+        {/* <Container fixed>
           <QRCodeSVG size={256} value={JSON.stringify(groupMatches)} />
-        </Container>
+        </Container> */}
         {/* <pre>{JSON.stringify(groupMatches, null, 2)}</pre> */}
       </>
     )
@@ -69,6 +76,18 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
         sx={{ position: "fixed", bottom: 16, right: 16 }}
         icon={<SpeedDialIcon />}
       >
+        <SpeedDialAction
+          key={"download"}
+          icon={<Download />}
+          tooltipTitle={"download"}
+          onClick={handleDownload}
+        />
+        <SpeedDialAction
+          key={"share"}
+          icon={<MobileScreenShare />}
+          tooltipTitle={"share"}
+          onClick={handleShare}
+        />
         <SpeedDialAction
           key={"remove"}
           icon={<Clear />}

@@ -3,7 +3,6 @@ import { Html5QrcodeError } from "html5-qrcode/esm/core";
 import { useParams } from "react-router-dom";
 import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
 import { useBallotStorage, useEvent } from "../hooks";
-import { unminifyBallot } from "../../services/BallotStorage";
 
 export function DelegateCapturePage() {
   const { eventId } = useParams();
@@ -13,7 +12,7 @@ export function DelegateCapturePage() {
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
     const minifiedBallots = JSON.parse(decodedText);
-    const ballots = minifiedBallots.map(unminifyBallot);
+    const ballots = minifiedBallots;
     createBallots(...ballots);
   };
 

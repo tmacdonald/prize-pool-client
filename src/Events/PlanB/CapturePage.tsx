@@ -12,7 +12,7 @@ import { useBeep, useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
 
 export function CapturePage() {
   const { eventId } = useParams();
-  const event = useEvent(eventId!);
+  const { item: event } = useEvent(eventId!);
 
   const { matches, createMatches } = useMatchStorage(eventId!);
   const { prizes } = usePrizeStorage(eventId!);

@@ -6,7 +6,7 @@ export interface Ballot extends Ticket {
 
 export interface Ticket {
   childId: string;
-  ticketId: number;
+  ticketId: string;
   name: string;
   group: string;
   restrictions?: string[];
