@@ -15,7 +15,8 @@ export function DelegatedCapturePage() {
   const start = parseInt(searchParams.get("start") ?? "1", 10);
   const end = parseInt(searchParams.get("end") ?? "1", 10);
 
-  const { createBallots, deleteAllBallots } = useDelegatedBallotStorage();
+  const { ballots, createBallots, deleteAllBallots } =
+    useDelegatedBallotStorage();
 
   const [prizeId, setPrizeId] = useState<number>(start);
   const [ticket, setTicket] = useState<
@@ -96,6 +97,20 @@ export function DelegatedCapturePage() {
     }
   };
 
+  const handleExport = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(ballots));
+    setSnackbarMessage("Created ballot");
+    setSnackbarOpen(true);
+  };
+
+  const handleShare = async () => {
+    await navigator.share({
+      text: JSON.stringify(ballots),
+    });
+    setSnackbarMessage("Created ballot");
+    setSnackbarOpen(true);
+  };
+
   return (
     <>
       <div>
@@ -108,6 +123,8 @@ export function DelegatedCapturePage() {
           Results
         </Button>
         <Button onClick={() => deleteAllBallots()}>Clear</Button>
+        <Button onClick={handleExport}>Copy to clipboard</Button>
+        <Button onClick={handleShare}>Share</Button>
         <PrizeControls
           value={prizeId}
           onChange={setPrizeId}

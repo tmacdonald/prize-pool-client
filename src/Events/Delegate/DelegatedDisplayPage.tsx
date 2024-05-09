@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { groupBy, range } from "lodash";
-import { QRCodeCanvas } from "qrcode.react";
 import styled from "styled-components";
 import { useDelegatedBallotStorage } from "../hooks";
 
@@ -53,13 +52,6 @@ export function DelegatedDisplayPage() {
                 <Typography variant="h5" component="div">
                   Prize {prize}
                 </Typography>
-                <QRCodeContainer>
-                  <QRCodeCanvas
-                    size={256}
-                    level={"H"}
-                    value={JSON.stringify(prizeBallots)}
-                  />
-                </QRCodeContainer>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                   {`${prizeBallots.length} tickets scanned`}
                 </Typography>
