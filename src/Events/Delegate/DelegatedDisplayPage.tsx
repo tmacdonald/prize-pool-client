@@ -20,11 +20,6 @@ const Prizes = styled.div`
   padding: 12px 0;
 `;
 
-const QRCodeContainer = styled.div`
-  margin: 12px auto;
-  text-align: center;
-`;
-
 export function DelegatedDisplayPage() {
   const { ballots } = useDelegatedBallotStorage();
   const ballotsGroupedByPrize = groupBy(ballots, "prizeId");
