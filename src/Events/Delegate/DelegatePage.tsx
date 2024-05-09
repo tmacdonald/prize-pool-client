@@ -80,7 +80,7 @@ export const DelegatePage = () => {
 
       <Ranges>
         {ranges.map(({ start, end }, i) => (
-          <div>
+          <div key={i}>
             <h2>Team {i + 1}</h2>
             <QRCodeSVG
               size={128}

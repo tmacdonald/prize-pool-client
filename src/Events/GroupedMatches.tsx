@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import { generateMatches } from "../services/MatchingEngine";
 import { useBallotStorage, useMatchStorage, usePrizeStorage } from "./hooks";
 import {
-  Checkbox,
   Container,
   SpeedDial,
   SpeedDialAction,
@@ -17,6 +16,7 @@ import {
 import { Add, Clear, Download, MobileScreenShare } from "@mui/icons-material";
 import { groupBy } from "lodash";
 import { Match } from "../services/MatchStorage";
+import { Fragment } from "react/jsx-runtime";
 
 interface MatchesProps {
   eventId: string;
@@ -52,7 +52,7 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
 
   const matchTables = Object.entries(groupedMatches).map(
     ([group, groupMatches]) => (
-      <>
+      <Fragment key={group}>
         <Container>
           <h2>{group}</h2>
         </Container>
@@ -61,7 +61,7 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
           <QRCodeSVG size={256} value={JSON.stringify(groupMatches)} />
         </Container> */}
         {/* <pre>{JSON.stringify(groupMatches, null, 2)}</pre> */}
-      </>
+      </Fragment>
     )
   );
 
@@ -114,9 +114,8 @@ export const MatchesTable = ({ matches }: IMatchesTableProps) => (
     <Table stickyHeader>
       <TableHead>
         <TableRow>
-          <TableCell>Prize</TableCell>
+          <TableCell>Cake</TableCell>
           <TableCell>Participant</TableCell>
-          <TableCell>Based on Preference</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -124,9 +123,6 @@ export const MatchesTable = ({ matches }: IMatchesTableProps) => (
           <TableRow key={`${match.prizeId}:${match.participantId}`}>
             <TableCell>{match.prizeId}</TableCell>
             <TableCell>{match.name}</TableCell>
-            <TableCell>
-              <Checkbox checked={match.basedOnPreference} readOnly={true} />
-            </TableCell>
           </TableRow>
         ))}
       </TableBody>

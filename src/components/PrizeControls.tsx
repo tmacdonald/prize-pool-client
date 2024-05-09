@@ -1,4 +1,5 @@
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, MenuItem, Select } from "@mui/material";
+import { range } from "lodash";
 // import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -43,7 +44,15 @@ export const PrizeControls = ({
         &lt;
       </Button>
       <div>
-        <Chip color={"primary"} label={`Prize ${value}`} />
+        {/* <Chip color={"primary"} label={`Cake ${value}`} /> */}
+        <Select
+          value={value}
+          onChange={(e) => onChange(parseInt(`${e.target.value}`, 10))}
+        >
+          {range(minPrizeId, maxPrizeId).map((prizeId) => (
+            <MenuItem value={prizeId}>{prizeId}</MenuItem>
+          ))}
+        </Select>
       </div>
       {value < maxPrizeId && (
         <Button variant={"contained"} onClick={incrementPrize}>
