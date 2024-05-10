@@ -27,6 +27,7 @@ import { ExportPage } from "./Events/ExportPage.tsx";
 import { ImportBallotsPage } from "./Events/ImportBallotsPage.tsx";
 import { ParticipantsPage } from "./Events/ParticipantsPage.tsx";
 import { ImportParticipantsPage } from "./Events/ImportParticipantsPage.tsx";
+import { ParticipantStatsPage } from "./Events/ParticipantStatsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   { path: "/delegated/display", element: <DelegatedDisplayPage /> },
 
   { path: "/events/:eventId/prizes/stats", element: <PrizeStatsPage /> },
+  {
+    path: "/events/:eventId/participants/stats",
+    element: <ParticipantStatsPage />,
+  },
   { path: "/events/:eventId/planb/capture", element: <PlanBCapturePage /> },
 ]);
 

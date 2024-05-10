@@ -7,22 +7,20 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { differenceWith } from "lodash";
 import { useParams } from "react-router";
-import { useMatchStorage, usePrizeStorage } from "./hooks";
+import { useMatchStorage, useParticipantStorage } from "./hooks";
 import { Chip } from "@mui/material";
 
-export const PrizeStatsPage = () => {
+export const ParticipantStatsPage = () => {
   const { eventId } = useParams();
-  const { prizes } = usePrizeStorage(eventId!);
+  const { participants } = useParticipantStorage(eventId!);
   const { matches } = useMatchStorage(eventId!);
-  const won = new Set(matches.map((match) => match.prizeId));
-  //const { ballots } = useBallotStorage(eventId!);
-  //const ballotsGroupedByPrize = groupBy(ballots, "prizeId");
+  const winners = new Set(matches.map((m) => `${m.name}-${m.group}`));
 
-  // prizes that haven't been won
-  const unmatchedPrizes = differenceWith(
-    prizes,
-    [...won],
-    (prize, prizeId) => prize.id === prizeId
+  // participants who haven't won
+  let remainingParticipants = differenceWith(
+    participants,
+    [...winners],
+    (p, participantId) => `${p.name}-${p.group}` === participantId
   );
 
   return (
@@ -30,16 +28,18 @@ export const PrizeStatsPage = () => {
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>Prize</TableCell>
-            <TableCell>Free from restrictions</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Homeroom</TableCell>
+            <TableCell>Restrictions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {unmatchedPrizes.map((prize) => (
-            <TableRow key={prize.id}>
-              <TableCell>{prize.id}</TableCell>
+          {remainingParticipants.map((participant) => (
+            <TableRow key={participant.name}>
+              <TableCell>{participant.name}</TableCell>
+              <TableCell>{participant.group}</TableCell>
               <TableCell>
-                {prize.freeFromRestrictions?.map((restriction) => (
+                {participant.restrictions?.map((restriction) => (
                   <Chip label={restriction} />
                 ))}
               </TableCell>

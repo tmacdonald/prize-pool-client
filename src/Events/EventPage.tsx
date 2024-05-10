@@ -42,17 +42,23 @@ export const EventPage = () => {
               </ListItemIcon>
               <ListItemText>Prizes</ListItemText>
             </MenuItem>
-            <MenuItem component={Link} to={"./capture"}>
+            {/* <MenuItem component={Link} to={"./capture"}>
               <ListItemIcon>
                 <CameraIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Capture Ballots</ListItemText>
-            </MenuItem>
-            <MenuItem component={Link} to={"./ballots"}>
+            </MenuItem> */}
+            {/* <MenuItem component={Link} to={"./ballots"}>
               <ListItemIcon>
                 <BallotIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Ballots</ListItemText>
+            </MenuItem> */}
+            <MenuItem component={Link} to={"./planb/capture"}>
+              <ListItemIcon>
+                <CameraIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Capture</ListItemText>
             </MenuItem>
             <MenuItem component={Link} to={"./matches"}>
               <ListItemIcon>
@@ -60,30 +66,31 @@ export const EventPage = () => {
               </ListItemIcon>
               <ListItemText>Matches</ListItemText>
             </MenuItem>
-            <MenuItem component={Link} to={"./teams"}>
-              <ListItemIcon>
-                <Groups fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Teams</ListItemText>
-            </MenuItem>
-            <MenuItem component={Link} to={"./prizes/stats"}>
-              <ListItemIcon>
-                <QueryStats fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Prize Stats</ListItemText>
-            </MenuItem>
-            <Divider />
             <MenuItem component={Link} to={"./participants"}>
               <ListItemIcon>
                 <Person fontSize="small" />
               </ListItemIcon>
               <ListItemText>Participants</ListItemText>
             </MenuItem>
-            <MenuItem component={Link} to={"./planb/capture"}>
+            {/* <MenuItem component={Link} to={"./teams"}>
               <ListItemIcon>
-                <CameraIcon fontSize="small" />
+                <Groups fontSize="small" />
               </ListItemIcon>
-              <ListItemText>Plan B</ListItemText>
+              <ListItemText>Teams</ListItemText>
+            </MenuItem> */}
+
+            <Divider />
+            <MenuItem component={Link} to={"./prizes/stats"}>
+              <ListItemIcon>
+                <QueryStats fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Prize Stats</ListItemText>
+            </MenuItem>
+            <MenuItem component={Link} to={"./participants/stats"}>
+              <ListItemIcon>
+                <QueryStats fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Participant Stats</ListItemText>
             </MenuItem>
           </MenuList>
         </Paper>
