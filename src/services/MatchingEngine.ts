@@ -130,6 +130,7 @@ function createCustomMatches(
       winners.add(participantId);
       won.add(prizeId);
       matches.push({
+        id: window.crypto.randomUUID(),
         prizeId,
         participantId,
         name,
@@ -163,6 +164,7 @@ function createCustomMatches(
       winners.add(participantId);
       won.add(prizeId);
       matches.push({
+        id: window.crypto.randomUUID(),
         prizeId,
         participantId,
         name,

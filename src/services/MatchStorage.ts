@@ -1,6 +1,6 @@
-import { SimpleLocalStorage } from "./CrudStorage";
+import { Identifiable, LocalStorage } from "./CrudStorage";
 
-export interface Match {
+export interface Match extends Identifiable<string> {
   participantId: string;
   prizeId: number;
   name: string;
@@ -9,7 +9,7 @@ export interface Match {
 }
 
 const getMatchStorage = (eventId: string) => {
-  return new SimpleLocalStorage<Match>(`${eventId}:matches`);
+  return new LocalStorage<string, Match>(`${eventId}:matches`);
 };
 
 export { getMatchStorage };

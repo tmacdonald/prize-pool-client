@@ -106,6 +106,7 @@ export function CapturePage() {
           }
 
           const match: Match = {
+            id: window.crypto.randomUUID(),
             prizeId,
             participantId: newTicket.childId,
             name: newTicket.name,
@@ -153,6 +154,7 @@ export function CapturePage() {
           maxPrizeId={prizes.length}
         />
         <Snackbar
+          sx={{ bottom: { xs: 90 } }}
           open={snackbarOpen}
           autoHideDuration={3000}
           onClose={() => setSnackbarOpen(false)}

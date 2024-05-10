@@ -60,10 +60,11 @@ export const useMatchStorage = (eventId: string) => {
   const {
     items: matches,
     createItem: createMatches,
+    deleteItem: deleteMatch,
     deleteAllItems: deleteAllMatches,
-  } = useSimpleCrudStorage(matchStorage);
+  } = useCrudStorage(matchStorage);
 
-  return { matches, createMatches, deleteAllMatches };
+  return { matches, createMatches, deleteMatch, deleteAllMatches };
 };
 
 export const useParticipantStorage = (eventId: string) => {
