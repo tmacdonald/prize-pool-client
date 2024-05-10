@@ -33,14 +33,15 @@ export function CapturePage() {
   }, [prizes]);
 
   const handleScan = (decodedText: string) => {
-    console.log(decodedText);
+    console.log({ decodedText });
     try {
       const newTicket = JSON.parse(decodedText) as Ticket;
+      console.log({ newTicket });
       setTicket(([ticketBefore]) => [newTicket, ticketBefore]);
     } catch (error) {
       console.error(error);
-      setSnackbarMessage(`${error}`);
-      setSnackbarOpen(true);
+      // setSnackbarMessage(`${error}`);
+      // setSnackbarOpen(true);
     }
   };
 

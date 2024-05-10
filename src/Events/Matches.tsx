@@ -13,13 +13,20 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { generateMatches } from "../services/MatchingEngine";
-import { useBallotStorage, useMatchStorage, usePrizeStorage } from "./hooks";
+import {
+  useBallotStorage,
+  useMatchStorage,
+  useParticipantStorage,
+  usePrizeStorage,
+} from "./hooks";
+import { generateMatchesForParticipants } from "../services/PlanBMatchingEngine";
 
 interface MatchesProps {
   eventId: string;
 }
 
 export const Matches = ({ eventId }: MatchesProps) => {
+  const { participants } = useParticipantStorage(eventId!);
   const { prizes } = usePrizeStorage(eventId!);
   const { ballots } = useBallotStorage(eventId!);
   const { matches, createMatches, deleteMatch, deleteAllMatches } =
@@ -29,6 +36,18 @@ export const Matches = ({ eventId }: MatchesProps) => {
     const { matches: generatedMatches } = generateMatches(prizes, ballots);
 
     await deleteAllMatches();
+    await createMatches(...generatedMatches);
+  };
+
+  const handleGenerateRemainingMatches = async () => {
+    console.log({ matches, prizes, participants });
+
+    const { matches: generatedMatches } = generateMatchesForParticipants(
+      matches,
+      prizes,
+      participants
+    );
+
     await createMatches(...generatedMatches);
   };
 
@@ -86,6 +105,12 @@ export const Matches = ({ eventId }: MatchesProps) => {
           icon={<Add />}
           tooltipTitle={"add examples"}
           onClick={handleCreateMatches}
+        />
+        <SpeedDialAction
+          key={"generate-remaining-matches"}
+          icon={<Add />}
+          tooltipTitle={"generate remaining matches"}
+          onClick={handleGenerateRemainingMatches}
         />
       </SpeedDial>
     </>

@@ -1,8 +1,9 @@
 import { Button, Container, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Ballot } from "../services/BallotStorage";
 import { useParticipantStorage } from "./hooks";
+import { Participant } from "../services/ParticipantStorage";
+import { reverse } from "lodash";
 
 export const ImportParticipantsPage = () => {
   const { eventId } = useParams();
@@ -13,9 +14,15 @@ export const ImportParticipantsPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const ballots = JSON.parse(data) as Ballot[];
+    const participants = JSON.parse(data) as Participant[];
+    const modifiedParticipants = participants.map((p) => {
+      return {
+        ...p,
+        name: reverse(p.name.split(",").map((s) => s.trim())).join(" "),
+      };
+    });
 
-    await createParticipants(...ballots);
+    await createParticipants(...modifiedParticipants);
     navigate(`/events/${eventId}/participants`);
   };
 
