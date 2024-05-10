@@ -101,14 +101,14 @@ export function CapturePage() {
           if (prizeId) {
             const prize = prizeLookup[prizeId];
 
-            if (
-              (prize.freeFromRestrictions?.length ?? 0) > 0 &&
-              (newTicket.restrictions?.length ?? 0) === 0
-            ) {
-              setSnackbarMessage(`${newTicket.name} has no allergens`);
-              setSnackbarOpen(true);
-              return;
-            }
+            // if (
+            //   (prize.freeFromRestrictions?.length ?? 0) > 0 &&
+            //   (newTicket.restrictions?.length ?? 0) === 0
+            // ) {
+            //   setSnackbarMessage(`${newTicket.name} has no allergens`);
+            //   setSnackbarOpen(true);
+            //   return;
+            // }
 
             if (
               (newTicket.restrictions?.length ?? 0) > 0 &&
