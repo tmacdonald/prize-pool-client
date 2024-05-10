@@ -40,8 +40,6 @@ export function CapturePage() {
       setTicket(([ticketBefore]) => [newTicket, ticketBefore]);
     } catch (error) {
       console.error(error);
-      // setSnackbarMessage(`${error}`);
-      // setSnackbarOpen(true);
     }
   };
 
@@ -117,7 +115,7 @@ export function CapturePage() {
               participantId: newTicket.childId,
               name: newTicket.name,
               group: newTicket.group,
-              basedOnPreference: false,
+              basedOnPreference: true,
             };
 
             await createMatches(match);

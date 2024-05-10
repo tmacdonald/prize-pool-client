@@ -20,9 +20,13 @@ import { Fragment } from "react/jsx-runtime";
 
 interface MatchesProps {
   eventId: string;
+  showOnlyUnmatched?: boolean;
 }
 
-export const GroupedMatches = ({ eventId }: MatchesProps) => {
+export const GroupedMatches = ({
+  eventId,
+  showOnlyUnmatched = false,
+}: MatchesProps) => {
   const { prizes } = usePrizeStorage(eventId!);
   const { ballots } = useBallotStorage(eventId!);
   const { matches, createMatches, deleteAllMatches } = useMatchStorage(
@@ -48,7 +52,10 @@ export const GroupedMatches = ({ eventId }: MatchesProps) => {
     navigator.share({ text: JSON.stringify(matches) });
   };
 
-  const groupedMatches = groupBy(matches, "group");
+  const filteredMatches = showOnlyUnmatched
+    ? matches.filter((match) => match.basedOnPreference === false)
+    : matches;
+  const groupedMatches = groupBy(filteredMatches, "group");
 
   const matchTables = Object.entries(groupedMatches).map(
     ([group, groupMatches]) => (

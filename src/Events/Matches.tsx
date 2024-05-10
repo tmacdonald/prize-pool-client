@@ -23,9 +23,13 @@ import { generateMatchesForParticipants } from "../services/PlanBMatchingEngine"
 
 interface MatchesProps {
   eventId: string;
+  showOnlyUnmatched?: boolean;
 }
 
-export const Matches = ({ eventId }: MatchesProps) => {
+export const Matches = ({
+  eventId,
+  showOnlyUnmatched = false,
+}: MatchesProps) => {
   const { participants } = useParticipantStorage(eventId!);
   const { prizes } = usePrizeStorage(eventId!);
   const { ballots } = useBallotStorage(eventId!);
@@ -59,6 +63,10 @@ export const Matches = ({ eventId }: MatchesProps) => {
     deleteMatch(matchId);
   };
 
+  const filteredMatches = showOnlyUnmatched
+    ? matches.filter((match) => match.basedOnPreference === false)
+    : matches;
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -73,7 +81,7 @@ export const Matches = ({ eventId }: MatchesProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {matches.map((match) => (
+            {filteredMatches.map((match) => (
               <TableRow key={match.id}>
                 <TableCell>{match.prizeId}</TableCell>
                 <TableCell>{match.name}</TableCell>
