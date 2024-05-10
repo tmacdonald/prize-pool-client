@@ -1,4 +1,5 @@
 import {
+  Button,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
@@ -32,7 +33,7 @@ export const PrizesPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const { item: event } = useEvent(eventId!);
-  const { prizes, createPrizes, updatePrize, deleteAllPrizes } =
+  const { prizes, createPrizes, updatePrize, deletePrize, deleteAllPrizes } =
     usePrizeStorage(eventId!);
   const possibleRestrictions = event?.availableRestrictions ?? [];
 
@@ -79,6 +80,10 @@ export const PrizesPage = () => {
     navigator.share({ text: JSON.stringify(prizes) });
   };
 
+  const handleDelete = (prizeId: string) => {
+    deletePrize(prizeId);
+  };
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -87,6 +92,7 @@ export const PrizesPage = () => {
             <TableRow>
               <TableCell>Cake</TableCell>
               <TableCell>Free From Restrictions</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -113,6 +119,9 @@ export const PrizesPage = () => {
                       </ToggleButton>
                     ))}
                   </ToggleButtonGroup>
+                </TableCell>
+                <TableCell>
+                  <Button onClick={() => handleDelete(prize.id)}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}

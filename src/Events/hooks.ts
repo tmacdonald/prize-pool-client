@@ -27,10 +27,11 @@ export const usePrizeStorage = (eventId: string) => {
     items: prizes,
     createItem: createPrizes,
     updateItem: updatePrize,
+    deleteItem: deletePrize,
     deleteAllItems: deleteAllPrizes,
   } = useCrudStorage(prizeStorage);
 
-  return { prizes, createPrizes, updatePrize, deleteAllPrizes };
+  return { prizes, createPrizes, updatePrize, deletePrize, deleteAllPrizes };
 };
 
 export const useBallotStorage = (eventId: string) => {
