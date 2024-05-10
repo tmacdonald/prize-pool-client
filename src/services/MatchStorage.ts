@@ -2,7 +2,7 @@ import { Identifiable, LocalStorage } from "./CrudStorage";
 
 export interface Match extends Identifiable<string> {
   participantId: string;
-  prizeId: number;
+  prizeId: string;
   name: string;
   group?: string;
   basedOnPreference: boolean;

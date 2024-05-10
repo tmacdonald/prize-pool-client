@@ -5,7 +5,7 @@ import { intersection, keyBy } from "lodash";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
-import { PrizeControls } from "../../components/PrizeControls";
+import { PrizeSwitcher } from "../../components/PrizeSwitcher";
 import { Match } from "../../services/MatchStorage";
 import { Ticket } from "../../services/api";
 import { useBeep, useEvent, useMatchStorage, usePrizeStorage } from "../hooks";
@@ -18,7 +18,7 @@ export function CapturePage() {
   const { prizes } = usePrizeStorage(eventId!);
   const prizeLookup = keyBy(prizes, "id");
 
-  const [prizeId, setPrizeId] = useState<number>(1);
+  const [prizeId, setPrizeId] = useState<string | undefined>();
   const [ticket, setTicket] = useState<
     [Ticket | undefined, Ticket | undefined]
   >([undefined, undefined]);
@@ -27,6 +27,10 @@ export function CapturePage() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const playBeep = useBeep();
+
+  useEffect(() => {
+    setPrizeId(prizes?.[0]?.id);
+  }, [prizes]);
 
   const handleScan = (decodedText: string) => {
     console.log(decodedText);
@@ -83,42 +87,44 @@ export function CapturePage() {
             return;
           }
 
-          const prize = prizeLookup[prizeId];
-          console.log(
-            newTicket.restrictions,
-            intersection(
-              prize.freeFromRestrictions ?? [],
-              newTicket.restrictions ?? []
-            )
-          );
-          if (
-            (newTicket.restrictions?.length ?? 0) > 0 &&
-            intersection(
-              prize.freeFromRestrictions ?? [],
-              newTicket.restrictions ?? []
-            ).length !== (newTicket.restrictions?.length ?? 0)
-          ) {
-            setSnackbarMessage(
-              "Cake has allergens not allowed for participant"
+          if (prizeId) {
+            const prize = prizeLookup[prizeId];
+            console.log(
+              newTicket.restrictions,
+              intersection(
+                prize.freeFromRestrictions ?? [],
+                newTicket.restrictions ?? []
+              )
             );
+            if (
+              (newTicket.restrictions?.length ?? 0) > 0 &&
+              intersection(
+                prize.freeFromRestrictions ?? [],
+                newTicket.restrictions ?? []
+              ).length !== (newTicket.restrictions?.length ?? 0)
+            ) {
+              setSnackbarMessage(
+                "Cake has allergens not allowed for participant"
+              );
+              setSnackbarOpen(true);
+              return;
+            }
+
+            const match: Match = {
+              id: window.crypto.randomUUID(),
+              prizeId,
+              participantId: newTicket.childId,
+              name: newTicket.name,
+              group: newTicket.group,
+              basedOnPreference: false,
+            };
+
+            await createMatches(match);
+            playBeep();
+
+            setSnackbarMessage("Match!");
             setSnackbarOpen(true);
-            return;
           }
-
-          const match: Match = {
-            id: window.crypto.randomUUID(),
-            prizeId,
-            participantId: newTicket.childId,
-            name: newTicket.name,
-            group: newTicket.group,
-            basedOnPreference: false,
-          };
-
-          await createMatches(match);
-          playBeep();
-
-          setSnackbarMessage("Match!");
-          setSnackbarOpen(true);
         }
       }
     };
@@ -147,12 +153,13 @@ export function CapturePage() {
           onScan={handleScan}
           onError={handleError}
         />
-        <PrizeControls
-          value={prizeId}
-          onChange={setPrizeId}
-          minPrizeId={1}
-          maxPrizeId={prizes.length}
-        />
+        {prizeId && (
+          <PrizeSwitcher
+            value={prizeId}
+            onChange={setPrizeId}
+            prizes={prizes}
+          />
+        )}
         <Snackbar
           sx={{ bottom: { xs: 90 } }}
           open={snackbarOpen}

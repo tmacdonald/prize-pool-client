@@ -62,7 +62,7 @@ export function CapturePage() {
           )
         ) {
           const ballot: Ballot = {
-            prizeId,
+            prizeId: `${prizeId}`,
             participantId: newTicket.childId,
             ticketId: newTicket.ticketId,
             name: newTicket.name,

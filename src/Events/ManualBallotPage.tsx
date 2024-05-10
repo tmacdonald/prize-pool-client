@@ -35,7 +35,7 @@ async function digestMessage(message: string) {
 export const ManualBallotPage = () => {
   const { eventId } = useParams();
   const [searchParams] = useSearchParams();
-  const prizeId = parseInt(searchParams.get("prizeId") ?? "0", 10);
+  const prizeId = searchParams.get("prizeId");
 
   const { createBallots } = useBallotStorage(eventId!);
 
@@ -51,7 +51,7 @@ export const ManualBallotPage = () => {
       participantId,
       name,
       group,
-      prizeId,
+      prizeId: prizeId!,
       ticketId: "1",
     };
     createBallots(ballot);

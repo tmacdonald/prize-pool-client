@@ -23,7 +23,7 @@ interface MatchingOptions {
 
 interface MatchingResults {
   matches: Match[];
-  remainingPrizes: number[];
+  remainingPrizes: string[];
   remainingParticipants: string[];
 }
 
@@ -106,7 +106,7 @@ function createCustomMatches(
     options?.isPrizeEligibleForBallot ?? ((_prize, _ballot) => true);
 
   const matches: Match[] = [];
-  const won = new Set<number>();
+  const won = new Set<string>();
   const winners = new Set<string>();
 
   const ballotsGroupedByPrize = groupBy(ballots, (ballot) => ballot.prizeId);

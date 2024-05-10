@@ -2,7 +2,7 @@ import { SimpleStorage, SimpleLocalStorage } from "./CrudStorage";
 
 export interface Ballot {
   participantId: string;
-  prizeId: number;
+  prizeId: string;
   ticketId: string;
   name: string;
   group?: string;

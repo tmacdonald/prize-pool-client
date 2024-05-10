@@ -1,11 +1,13 @@
 import {
   Button,
   Container as ContainerBase,
-  Slider,
+  TextField,
   styled,
 } from "@mui/material";
+import { range } from "lodash";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import sc from "styled-components";
 import { usePrizeStorage } from "./hooks";
 
 const Container = styled(ContainerBase)(
@@ -14,18 +16,25 @@ const Container = styled(ContainerBase)(
 `
 );
 
+const Form = sc.form`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
 export const AddPrizesPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
-  const { prizes, createPrizes } = usePrizeStorage(eventId!);
-  const [numPrizes, setNumPrizes] = useState<number>(0);
+  const { createPrizes } = usePrizeStorage(eventId!);
+  const [numPrizes, setNumPrizes] = useState<string>("");
+  const [prefix, setPrefix] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newPrizes = new Array(numPrizes).fill(0).map((_x, i) => {
+    const newPrizes = range(1, parseInt(numPrizes, 10) + 1).map((x) => {
       return {
-        id: prizes.length + i + 1,
+        id: `${prefix}${x}`,
       };
     });
 
@@ -35,19 +44,21 @@ export const AddPrizesPage = () => {
 
   return (
     <Container>
-      <form onSubmit={handleSubmit}>
-        <Slider
-          defaultValue={10}
-          valueLabelDisplay="on"
+      <Form onSubmit={handleSubmit}>
+        <TextField
           value={numPrizes}
-          onChange={(_e, value) =>
-            setNumPrizes(typeof value === "number" ? value : value[0])
-          }
+          onChange={(e) => setNumPrizes(e.target.value)}
+          label={"Number of cakes"}
+        />
+        <TextField
+          value={prefix}
+          onChange={(e) => setPrefix(e.target.value)}
+          label={"Prefix"}
         />
         <Button variant={"contained"} type={"submit"}>
           Create
         </Button>
-      </form>
+      </Form>
     </Container>
   );
 };

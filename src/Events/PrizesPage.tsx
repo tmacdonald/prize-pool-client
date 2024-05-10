@@ -51,7 +51,7 @@ export const PrizesPage = () => {
             ]
           : undefined;
       return {
-        id: i + 1,
+        id: `${i + 1}`,
         freeFromRestrictions,
       };
     });
@@ -85,7 +85,7 @@ export const PrizesPage = () => {
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell>Prize</TableCell>
+              <TableCell>Cake</TableCell>
               <TableCell>Free From Restrictions</TableCell>
             </TableRow>
           </TableHead>
