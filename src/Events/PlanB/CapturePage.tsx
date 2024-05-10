@@ -1,7 +1,7 @@
 import { Snackbar } from "@mui/material";
 import { QrcodeErrorCallback } from "html5-qrcode";
 import { Html5QrcodeError } from "html5-qrcode/esm/core";
-import { intersection, keyBy } from "lodash";
+import { differenceWith, intersection, keyBy } from "lodash";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Html5QrcodePlugin from "../../components/Html5QrCodePlugin";
@@ -16,7 +16,19 @@ export function CapturePage() {
 
   const { matches, createMatches } = useMatchStorage(eventId!);
   const { prizes } = usePrizeStorage(eventId!);
-  const prizeLookup = keyBy(prizes, "id");
+
+  const won = new Set(matches.map((match) => match.prizeId));
+  //const { ballots } = useBallotStorage(eventId!);
+  //const ballotsGroupedByPrize = groupBy(ballots, "prizeId");
+
+  // prizes that haven't been won
+  const unmatchedPrizes = differenceWith(
+    prizes,
+    [...won],
+    (prize, prizeId) => prize.id === prizeId
+  );
+
+  const prizeLookup = keyBy(unmatchedPrizes, "id");
 
   const [prizeId, setPrizeId] = useState<string | undefined>();
   const [ticket, setTicket] = useState<
@@ -29,8 +41,8 @@ export function CapturePage() {
   const playBeep = useBeep();
 
   useEffect(() => {
-    setPrizeId(prizes?.[0]?.id);
-  }, [prizes]);
+    setPrizeId(unmatchedPrizes?.[0]?.id);
+  }, [unmatchedPrizes]);
 
   const handleScan = (decodedText: string) => {
     console.log({ decodedText });
@@ -159,7 +171,7 @@ export function CapturePage() {
           <PrizeSwitcher
             value={prizeId}
             onChange={setPrizeId}
-            prizes={prizes}
+            prizes={unmatchedPrizes}
           />
         )}
         <Snackbar

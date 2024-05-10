@@ -40,7 +40,10 @@ export const PrizeStatsPage = () => {
               <TableCell>{prize.id}</TableCell>
               <TableCell>
                 {prize.freeFromRestrictions?.map((restriction) => (
-                  <Chip label={restriction} />
+                  <Chip
+                    key={`${prize.id}-${restriction}`}
+                    label={restriction}
+                  />
                 ))}
               </TableCell>
             </TableRow>
