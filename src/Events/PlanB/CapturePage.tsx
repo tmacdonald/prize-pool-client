@@ -76,13 +76,13 @@ export function CapturePage() {
           );
 
           if (prizeWon) {
-            setSnackbarMessage("Cake has already been won");
+            setSnackbarMessage(`Cake ${prizeId} has already been won`);
             setSnackbarOpen(true);
             return;
           }
 
           if (participantWon) {
-            setSnackbarMessage("Participant has already won a cake");
+            setSnackbarMessage(`${newTicket.name} has already won a cake`);
             setSnackbarOpen(true);
             return;
           }
@@ -104,7 +104,7 @@ export function CapturePage() {
               ).length !== (newTicket.restrictions?.length ?? 0)
             ) {
               setSnackbarMessage(
-                "Cake has allergens not allowed for participant"
+                `Cake has allergens not allowed for ${newTicket.name}`
               );
               setSnackbarOpen(true);
               return;
@@ -122,7 +122,7 @@ export function CapturePage() {
             await createMatches(match);
             playBeep();
 
-            setSnackbarMessage("Match!");
+            setSnackbarMessage(`${newTicket.name} has won ${prizeId}`);
             setSnackbarOpen(true);
           }
         }
