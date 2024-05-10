@@ -8,12 +8,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useNavigate, useParams } from "react-router";
 import { useParticipantStorage } from "./hooks";
-import { Download, Upload } from "@mui/icons-material";
+import { Clear, Download, Upload } from "@mui/icons-material";
 
 export const ParticipantsPage = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
-  const { participants } = useParticipantStorage(eventId!);
+  const { participants, deleteAllParticipants } = useParticipantStorage(
+    eventId!
+  );
 
   const handleDownload = () => {
     navigator.clipboard.writeText(JSON.stringify(participants));
@@ -21,6 +23,10 @@ export const ParticipantsPage = () => {
 
   const handleImport = () => {
     navigate("./import");
+  };
+
+  const handleRemoveAllParticipants = () => {
+    deleteAllParticipants();
   };
 
   return (
@@ -67,6 +73,12 @@ export const ParticipantsPage = () => {
           icon={<Upload />}
           tooltipTitle={"import"}
           onClick={handleImport}
+        />
+        <SpeedDialAction
+          key={"remove"}
+          icon={<Clear />}
+          tooltipTitle={"remove"}
+          onClick={handleRemoveAllParticipants}
         />
       </SpeedDial>
     </>
