@@ -1,7 +1,7 @@
-import BallotIcon from "@mui/icons-material/Ballot";
+import { Key, Person, QueryStats } from "@mui/icons-material";
 import CakeIcon from "@mui/icons-material/Cake";
-import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import CameraIcon from "@mui/icons-material/Camera";
+import JoinInnerIcon from "@mui/icons-material/JoinInner";
 import {
   Container,
   Divider,
@@ -14,7 +14,6 @@ import {
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useEvent } from "./hooks";
-import { Groups, Key, Person, QueryStats } from "@mui/icons-material";
 
 export const EventPage = () => {
   const { eventId } = useParams();
